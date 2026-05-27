@@ -20,6 +20,6 @@ Singleton {
     property real barSection: 20; // section spacing
     property real barComp: 20; // component spacing
     property real barHPadding: 12; // horizontal padding
-    property real barVPadding: 0; // vertical padding
+    property real barVPadding: 4; // vertical padding
   }
 }

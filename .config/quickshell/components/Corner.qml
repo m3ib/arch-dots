@@ -8,7 +8,7 @@ import qs.services
 Shape {
   id: root
 
-  property real radius: 24
+  property real radius: 10
   property real angle: 0
 
   transform: Rotation { origin.x: root.radius/2; origin.y: root.radius/2; angle: root.angle}
