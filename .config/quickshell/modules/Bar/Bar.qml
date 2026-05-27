@@ -2,6 +2,7 @@
 
 import Quickshell
 import QtQuick
+import QtQuick.Layouts
 
 import qs.components
 import qs.services
@@ -21,7 +22,6 @@ ShellRoot {
       }
 
       color: "transparent"
-
       mask: Region { item: rect }
       exclusiveZone: Config.size.bar
 
@@ -35,11 +35,64 @@ ShellRoot {
         id: rect
 
         anchors.top: parent.top
-
         width: parent.width
         height: Config.size.bar
-
         color: Config.clr.bg
+
+        RowLayout {
+          anchors.centerIn: parent
+          width: parent.width - Config.spacing.barHPadding*2
+          height: parent.height - Config.spacing.barVPadding*2
+          spacing: Config.spacing.barSection
+
+          Item {
+            id: leftSection
+
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            RowLayout {
+              anchors.fill: parent
+              spacing: Config.spacing.barComp
+
+              Text {
+                id: clock
+
+                color: Config.clr.fg
+                text: Sys.fmtTime("hh:mm")
+              }
+            }
+          }
+
+          Item {
+            id: centerSection
+
+            width: placeholder.width
+            Layout.fillHeight: true
+
+            // TODO: replace placeholder with workspaces
+            Rectangle {
+              id: placeholder
+
+              width: 20
+              height: parent.height
+              color: Config.clr.primary
+            }
+          }
+
+          Item {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
+            RowLayout {
+              id: rightSection
+
+              anchors.fill: parent
+
+              // TODO: add content
+            }
+          }
+        }
       }
 
       Corner {

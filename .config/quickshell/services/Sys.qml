@@ -6,5 +6,12 @@ import QtQuick
 pragma Singleton
 
 Singleton {
-  // TODO:
+  SystemClock {
+    id: clock
+    precision: SystemClock.Seconds
+  }
+
+  function fmtTime(fmt) {
+    return Qt.formatDateTime(clock.date, fmt)
+  }
 }
