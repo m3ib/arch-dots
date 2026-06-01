@@ -16,10 +16,13 @@ Singleton {
     property real bar: 32;
   }
   property var spacing: QtObject {
+    // Bar.qml
     // bar > section > component
     property real barSection: 20; // section spacing
     property real barComp: 20; // component spacing
     property real barHPadding: 12; // horizontal padding
     property real barVPadding: 4; // vertical padding
+    // Workspaces.qml
+    property real wsGrid: 8; // spacing between each workspace
   }
 }
