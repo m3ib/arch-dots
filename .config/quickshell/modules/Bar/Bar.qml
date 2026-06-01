@@ -1,6 +1,7 @@
 // Show the bar and it's child modules
 
 import Quickshell
+import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 
@@ -13,7 +14,9 @@ ShellRoot {
 
     PanelWindow {
       property var modelData
+
       screen: modelData
+      WlrLayershell.layer: WlrLayer.Bottom
 
       anchors {
         top: true
@@ -61,22 +64,6 @@ ShellRoot {
                 color: Config.clr.fg
                 text: Sys.fmtTime("hh:mm")
               }
-            }
-          }
-
-          Item {
-            id: centerSection
-
-            width: placeholder.width
-            Layout.fillHeight: true
-
-            // TODO: replace placeholder with workspaces
-            Rectangle {
-              id: placeholder
-
-              width: 20
-              height: parent.height
-              color: Config.clr.primary
             }
           }
 
