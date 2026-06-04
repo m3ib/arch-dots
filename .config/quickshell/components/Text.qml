@@ -5,6 +5,6 @@ import qs.services
 
 Text {
   color: Config.clr.fg
-  font.weight: 700
-  font.pixelSize: 14
+  font.weight: Config.fontWeight.normal
+  font.pixelSize: Config.fontSize.text
 }

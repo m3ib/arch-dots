@@ -74,9 +74,11 @@ ShellRoot {
             RowLayout {
               id: rightSection
 
-              anchors.fill: parent
+              anchors.right: parent.right
+              layoutDirection: Qt.RightToLeft
+              spacing: Config.spacing.barComp
 
-              // TODO: add content
+              Network {}
             }
           }
         }
