@@ -78,6 +78,7 @@ ShellRoot {
               layoutDirection: Qt.RightToLeft
               spacing: Config.spacing.barComp
 
+              Battery {}
               Network {}
             }
           }

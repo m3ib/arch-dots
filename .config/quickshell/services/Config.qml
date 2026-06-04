@@ -7,10 +7,11 @@ pragma Singleton
 
 Singleton {
   property var clr: QtObject {
-    property string primary: "#6666EE";
-    property string bg: "#13181E";
-    property string bgLt: "#28323F";
-    property string fg: "#F2F2F2";
+    property color primary: "#6666EE";
+    property color bg: "#13181E";
+    property color bgLt: "#28323F";
+    property color fg: "#F2F2F2";
+    property color danger: "#F38BA8";
   }
   property var fontSize: QtObject {
     // in pixels
