@@ -30,10 +30,23 @@ hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down" }))
 
+-- move window
+hl.bind(mainMod .. " + SHIFT + H", hl.dsp.window.move({ direction = "left" }))
+hl.bind(mainMod .. " + SHIFT + L", hl.dsp.window.move({ direction = "right" }))
+hl.bind(mainMod .. " + SHIFT + K", hl.dsp.window.move({ direction = "up" }))
+hl.bind(mainMod .. " + SHIFT + J", hl.dsp.window.move({ direction = "down" }))
+
+-- move window to monitor
+hl.bind(mainMod .. " + CTRL + H", hl.dsp.window.move({ monitor = "l" }))
+hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.move({ monitor = "r" }))
+hl.bind(mainMod .. " + CTRL + K", hl.dsp.window.move({ monitor = "u" }))
+hl.bind(mainMod .. " + CTRL + J", hl.dsp.window.move({ monitor = "d" }))
+
 -- switch workspaces with mainMod + [0-9]
 -- move active window to a workspace with mainMod + SHIFT + [0-9]
 for i = 1, 10 do
   local key = i % 10 -- 10 maps to key 0
+
   hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
   hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
   hl.bind(mainMod .. " + ALT + " .. key, hl.dsp.window.move({ workspace = i, follow = false }))
@@ -52,20 +65,17 @@ hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
+-- layout specific
+hl.bind(mainMod .. " + T", hl.dsp.layout("togglesplit"))
+hl.bind(mainMod .. " + M", hl.dsp.layout("swapsplit"))
+
 -- laptop multimedia keys for volume and LCD brightness
-hl.bind(
-  "XF86AudioRaiseVolume",
-  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"),
-  { locked = true, repeating = true }
-)
-hl.bind(
-  "XF86AudioLowerVolume",
-  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),
-  { locked = true, repeating = true }
-)
+hl.bind("XF86AudioRaiseVolume", hl.dsp.global("volume:increment"), { locked = true, repeating = true })
+hl.bind("XF86AudioLowerVolume", hl.dsp.global("volume:decrement"), { locked = true, repeating = true })
 hl.bind(
   "XF86AudioMute",
   hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
+  hl.dsp.global("volume:decrement"),
   { locked = true, repeating = true }
 )
 hl.bind(
@@ -73,18 +83,11 @@ hl.bind(
   hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
   { locked = true, repeating = true }
 )
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"), { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"), { locked = true, repeating = true })
-hl.bind(
-  "ALT + XF86AudioRaiseVolume",
-  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),
-  { locked = true, repeating = true }
-)
-hl.bind(
-  "ALT + XF86AudioLowerVolume",
-  hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),
-  { locked = true, repeating = true }
-)
+hl.bind("XF86MonBrightnessUp", hl.dsp.global("brightness:increment"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.global("brightness:decrement"), { locked = true, repeating = true })
+-- pretty handy
+hl.bind("ALT + XF86AudioRaiseVolume", hl.dsp.global("brightness:increment"), { locked = true, repeating = true })
+hl.bind("ALT + XF86AudioLowerVolume", hl.dsp.global("brightness:decrement"), { locked = true, repeating = true })
 
 -- requires playerctl
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
