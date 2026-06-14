@@ -9,7 +9,7 @@ import qs.modules.Workspaces
 ShellRoot {
   Bar {}
   Workspaces {}
-  // Osd {}
+  Osd {}
   // Notifs {}
   // Wallpaper {}
 }

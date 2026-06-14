@@ -43,5 +43,16 @@ Singleton {
 
     // Workspaces module
     property real wsGrid: 8; // spacing between each workspace
+
+    // Osd module
+    property real osdScreenGap: 48;
+    property real osdHPadding: 16;
+    property real osdVPadding: 12;
+    property real progressOsdPadding: 4;
+  }
+
+  property var duration: QtObject {
+    // in milliseconds
+    property real osd: 2000
   }
 }
