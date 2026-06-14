@@ -1,7 +1,11 @@
--- See https://wiki.hypr.land/Configuring/Basics/Window-Rules/
--- and https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
-
--- Example window rules that are useful
+-- distribute a `wsCount` workspaces on each monitor in sequence
+-- e.g. monitor1 gets 1-100, monitor2 gets 101-200, ...
+local wsCount = 100
+for _, mon in pairs(hl.get_monitors()) do
+  for i = (mon.id * wsCount) + 1, (mon.id + 1) * wsCount do
+    hl.workspace_rule({ workspace = i, monitor = mon.name })
+  end
+end
 
 local suppressMaximizeRule = hl.window_rule({
   -- Ignore maximize requests from all apps. You'll probably like this.

@@ -1,4 +1,5 @@
 // A fullscreen overview of workspaces
+// This module is strongly interlocked with hyprland's workspace rules
 
 import Quickshell
 import Quickshell.Io
@@ -19,8 +20,16 @@ ShellRoot {
 
       required property var modelData
 
-      // e.g. wsGroup = 0, 10, 20, ...
-      property real wsGroup: Math.floor((Hyprland.focusedWorkspace?.id-1)/10)*10
+      // each monitor owns a range of workspaces, e.g. 1-100, 101-200, ...
+      // each 10 workspaces in a monitor are grouped
+
+      // count of workspaces in each monitor. need to be in-sync with hyprland
+      readonly property real monWsCount: 100
+
+      // the start itself is excluded
+      property real monWsStart: Hyprland.monitors.values.find((mon) => mon.name == modelData.name)?.id * monWsCount
+      // current workspace's group
+      property real wsGroup: Math.floor((Hyprland.focusedWorkspace?.id - 1) / 10) * 10 // e.g. 0, 10, 20, ...
 
       screen: modelData
       exclusionMode: ExclusionMode.Ignore
@@ -45,7 +54,9 @@ ShellRoot {
       }
 
       function shiftWorkspace(value) {
-        setWorkspace(Math.max(1, Hyprland.focusedWorkspace.id+value))
+        // lock between the monitor workspaces range
+        setWorkspace(Math.max(root.monWsStart+1, Math.min(Hyprland.focusedWorkspace.id+value,
+        root.monWsStart+root.monWsCount)))
       }
 
       Item {
@@ -106,7 +117,7 @@ ShellRoot {
             property real length: Math.min(root.width/(wsGrid.columns+1), root.height/(wsGrid.rows+1))
             // workspace id used internally
             property real wsId: {parseInt(modelData)+1+root.wsGroup}
-            property var workspace: Hyprland.workspaces.values.find((ws) => ws.id == wsRect.wsId)
+            property var workspace: Hyprland.workspaces.values.find((ws) => ws.id == wsRect.wsId && ws.monitor?.name == root.modelData.name)
 
             Layout.preferredWidth: length
             Layout.preferredHeight: length
@@ -163,7 +174,7 @@ ShellRoot {
 
               Text {
                 anchors.centerIn: parent
-                text: wsRect.wsId
+                text: wsRect.wsId - root.monWsStart
               }
             }
           }
