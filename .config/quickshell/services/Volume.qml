@@ -22,7 +22,7 @@ Singleton {
   signal newData()
 
   property var defaulSink: Pipewire.defaultAudioSink
-  property real volume: Pipewire.defaultAudioSink.audio.volume
+  property real volume: Pipewire.defaultAudioSink?.audio?.volume
 
   function setVolume(value) {
     root.volume = Math.max(0, Math.min(value, 1.5))

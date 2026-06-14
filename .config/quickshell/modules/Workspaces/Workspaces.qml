@@ -20,7 +20,7 @@ ShellRoot {
       required property var modelData
 
       // e.g. wsGroup = 0, 10, 20, ...
-      property real wsGroup: Math.floor((Hyprland.focusedWorkspace.id-1)/10)*10
+      property real wsGroup: Math.floor((Hyprland.focusedWorkspace?.id-1)/10)*10
 
       screen: modelData
       exclusionMode: ExclusionMode.Ignore
@@ -37,7 +37,7 @@ ShellRoot {
       visible: ShellState.workspaces.show && (modelData.name == Hyprland.focusedMonitor.name)
 
       function getIcon(app) {
-        return Quickshell.iconPath(app, DesktopEntries.heuristicLookup(app).icon)
+        return Quickshell.iconPath(app, DesktopEntries.heuristicLookup(app)?.icon)
       }
 
       function setWorkspace(value) {
@@ -112,7 +112,7 @@ ShellRoot {
             Layout.preferredHeight: length
             color: wsRect.workspace ? Config.clr.bgLt : Config.clr.bg
             radius: 8
-            border.color: wsRect.wsId == Hyprland.focusedWorkspace.id ? Config.clr.primary : "transparent"
+            border.color: wsRect.wsId == Hyprland.focusedWorkspace?.id ? Config.clr.primary : "transparent"
 
             MouseArea {
               anchors.fill: parent
@@ -147,7 +147,7 @@ ShellRoot {
                     width: parent.width/3
                     height: parent.height/3
 
-                    source: getIcon(modelData.wayland.appId)
+                    source: getIcon(modelData.wayland?.appId)
                   }
                 }
               }
