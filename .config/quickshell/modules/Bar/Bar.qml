@@ -1,4 +1,5 @@
-// Show the bar and it's child modules
+// The shell's bar
+// Widgets are loaded in LeftSection, CenterSection, or RightSection
 
 import Quickshell
 import Quickshell.Wayland
@@ -24,71 +25,40 @@ ShellRoot {
         left: true
       }
 
+      implicitHeight: modelData.height // fullscreen
+
       color: "transparent"
       mask: Region { item: rect }
       exclusiveZone: Config.size.bar
 
-      Corner {
-        anchors.left: parent.left
-        y: Config.size.bar
-        angle: 90
-      }
 
+      // responsible for the dimensions of the actual bar
       Rectangle {
         id: rect
 
         anchors.top: parent.top
         width: parent.width
         height: Config.size.bar
-        color: Config.clr.bg
+        color: "transparent"
 
         RowLayout {
-          anchors.centerIn: parent
-          width: parent.width - Config.spacing.barHPadding*2
-          height: parent.height - Config.spacing.barVPadding*2
+          anchors.fill: parent
           spacing: Config.spacing.barSection
 
-          Item {
-            id: leftSection
-
+          LeftSection {
             Layout.fillWidth: true
             Layout.fillHeight: true
-
-            RowLayout {
-              anchors.fill: parent
-              spacing: Config.spacing.barComp
-
-              Text {
-                id: clock
-
-                color: Config.clr.fg
-                text: Sys.fmtTime("hh:mm")
-              }
-            }
           }
 
-          Item {
+          CenterSection {
+            Layout.fillHeight: true
+          }
+
+          RightSection {
             Layout.fillWidth: true
             Layout.fillHeight: true
-
-            RowLayout {
-              id: rightSection
-
-              anchors.right: parent.right
-              layoutDirection: Qt.RightToLeft
-              spacing: Config.spacing.barComp
-
-              Battery {}
-              Network {}
-            }
           }
         }
-      }
-
-      Corner {
-        anchors.right: parent.right
-        y: Config.size.bar
-        angle: 180
       }
     }
   }
