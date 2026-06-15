@@ -33,6 +33,8 @@ Singleton {
   property var spacing: QtObject {
     // Global
     property real icon: 4; // icon-text gap
+    property real labelHPadding: 12;
+    property real labelVPadding: 8;
 
     // Bar module
     // hierarchy: bar>section>component

@@ -28,8 +28,8 @@ ShellRoot {
 
       // the start itself is excluded
       property real monWsStart: Hyprland.monitors.values.find((mon) => mon.name == modelData.name)?.id * monWsCount
-      // current workspace's group
-      property real wsGroup: Math.floor((Hyprland.focusedWorkspace?.id - 1) / 10) * 10 // e.g. 0, 10, 20, ...
+      // current workspace's group (in monitor)
+      property real wsGroup: Math.floor((Hyprland.focusedWorkspace?.id - monWsStart - 1) / 10) * 10 // e.g. 0, 10, 20, ...
 
       screen: modelData
       exclusionMode: ExclusionMode.Ignore
@@ -62,26 +62,62 @@ ShellRoot {
       Item {
         focus: true
         Keys.onPressed: (event) => {
+          // starts at zero
+          const rowIndex = Math.floor((Hyprland.focusedWorkspace.id-1)/5);
+
           switch (event.key) {
             case Qt.Key_Return:
             case Qt.Key_Escape:
               ShellState.workspaces.show = false;
               event.accepted = true;
               break;
+            case Qt.Key_H: // left-most workspace in row
+              if (event.modifiers & Qt.ShiftModifier) {
+                setWorkspace(rowIndex*5+1);
+                event.accepted = true;
+                break;
+              }
             case Qt.Key_H: // left
-              shiftWorkspace(-1)
+              shiftWorkspace(-1);
               event.accepted = true;
               break;
+            case Qt.Key_J: // next group
+              if (event.modifiers & Qt.ShiftModifier) {
+                shiftWorkspace(wsGrid.columns*wsGrid.rows);
+                event.accepted = true;
+                break;
+              }
             case Qt.Key_J: // down
-              shiftWorkspace(wsGrid.columns)
+              shiftWorkspace(wsGrid.columns);
               event.accepted = true;
               break;
+            case Qt.Key_K: // previous group
+              if (event.modifiers & Qt.ShiftModifier) {
+                shiftWorkspace(-wsGrid.columns*wsGrid.rows);
+                event.accepted = true;
+                break;
+              }
             case Qt.Key_K: // up
-              shiftWorkspace(-wsGrid.columns)
+              shiftWorkspace(-wsGrid.columns);
               event.accepted = true;
               break;
+            case Qt.Key_L: // right-most workspace in row
+              if (event.modifiers & Qt.ShiftModifier) {
+                // find the last workspace in row, last maps to itself
+                setWorkspace((rowIndex+1)*5);
+                event.accepted = true;
+                break;
+              }
             case Qt.Key_L: // right
-              shiftWorkspace(1)
+              shiftWorkspace(1);
+              event.accepted = true;
+              break;
+            case Qt.Key_Home: // first workspace in the first group
+              setWorkspace(root.monWsStart+1);
+              event.accepted = true;
+              break;
+            case Qt.Key_End: // first workspace in the last group
+              setWorkspace(root.monWsStart+monWsCount-9);
               event.accepted = true;
               break;
             default:
@@ -95,6 +131,43 @@ ShellRoot {
         anchors.fill: parent
         color: Config.clr.bg
         opacity: 0.8
+      }
+
+      // workspace groups
+      Row {
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: (parent.height - wsGrid.height)/2 - height - 24
+        spacing: 8
+
+        Repeater {
+          model: 10
+          delegate: Rectangle {
+            required property var modelData
+
+            width: wsGroupTxt.width + Config.spacing.labelHPadding*2
+            height: wsGroupTxt.height + Config.spacing.labelVPadding*2
+            color: (modelData + 1 == Math.floor(root.wsGroup/10)+1) ? Config.clr.primary : Config.clr.bgLt
+            radius: Config.size.rounding
+
+            Behavior on color {
+              ColorAnimation { duration: 150; easing.type: Easing.InOutQuad }
+            }
+
+            MouseArea {
+              anchors.fill: parent
+              onClicked: {
+                setWorkspace(root.monWsStart+(modelData*10)+1) // first workspace in group
+              }
+            }
+
+            Text {
+              id: wsGroupTxt
+
+              anchors.centerIn: parent
+              text: "Group " + (modelData+1)
+            }
+          }
+        }
       }
 
       GridLayout {
@@ -116,7 +189,7 @@ ShellRoot {
 
             property real length: Math.min(root.width/(wsGrid.columns+1), root.height/(wsGrid.rows+1))
             // workspace id used internally
-            property real wsId: {parseInt(modelData)+1+root.wsGroup}
+            property real wsId: {parseInt(modelData)+root.monWsStart+root.wsGroup+1}
             property var workspace: Hyprland.workspaces.values.find((ws) => ws.id == wsRect.wsId && ws.monitor?.name == root.modelData.name)
 
             Layout.preferredWidth: length
@@ -174,7 +247,7 @@ ShellRoot {
 
               Text {
                 anchors.centerIn: parent
-                text: wsRect.wsId - root.monWsStart
+                text: wsRect.modelData + 1
               }
             }
           }
