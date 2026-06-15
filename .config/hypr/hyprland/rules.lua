@@ -1,11 +1,17 @@
 -- distribute a `wsCount` workspaces on each monitor in sequence
 -- e.g. monitor1 gets 1-100, monitor2 gets 101-200, ...
 local wsCount = 100
-for _, mon in pairs(hl.get_monitors()) do
-  for i = (mon.id * wsCount) + 1, (mon.id + 1) * wsCount do
-    hl.workspace_rule({ workspace = i, monitor = mon.name })
+for w = 1, wsCount do
+  for _, mon in pairs(hl.get_monitors()) do
+    hl.workspace_rule({ workspace = tostring(w + (mon.id * wsCount)), monitor = mon.name })
   end
 end
+-- set the default workspace for each monitor
+-- NOTE: this needs to be done manually, otherwise it fails on startup
+hl.workspace_rule({ workspace = tostring((wsCount * 0) + 1), monitor = "eDP-1", default = true })
+hl.workspace_rule({ workspace = tostring((wsCount * 1) + 1), monitor = "HDMI-A-1", default = true })
+
+hl.config({ cursor = { default_monitor = "HDMI-A-1" } })
 
 local suppressMaximizeRule = hl.window_rule({
   -- Ignore maximize requests from all apps. You'll probably like this.
