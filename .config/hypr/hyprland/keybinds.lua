@@ -42,14 +42,26 @@ hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.move({ monitor = "r" }))
 hl.bind(mainMod .. " + CTRL + K", hl.dsp.window.move({ monitor = "u" }))
 hl.bind(mainMod .. " + CTRL + J", hl.dsp.window.move({ monitor = "d" }))
 
+-- compute the absolute workspace id in the current workspace group
+function get_workspace(w)
+  local wsGroup = math.floor((hl.get_active_workspace().id - 1) / 10) * 10
+  return wsGroup + w
+end
+
 -- switch workspaces with mainMod + [0-9]
 -- move active window to a workspace with mainMod + SHIFT + [0-9]
-for i = 1, 10 do
-  local key = i % 10 -- 10 maps to key 0
+for w = 1, 10 do
+  local key = w % 10 -- 10 maps to key 0
 
-  hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
-  hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
-  hl.bind(mainMod .. " + ALT + " .. key, hl.dsp.window.move({ workspace = i, follow = false }))
+  hl.bind(mainMod .. " + " .. key, function()
+    hl.dispatch(hl.dsp.focus({ workspace = get_workspace(w) }))
+  end)
+  hl.bind(mainMod .. " + SHIFT + " .. key, function()
+    hl.dispatch(hl.dsp.window.move({ workspace = get_workspace(w) }))
+  end)
+  hl.bind(mainMod .. " + ALT + " .. key, function()
+    hl.dispatch(hl.dsp.window.move({ workspace = get_workspace(w), follow = false }))
+  end)
 end
 
 -- example special workspace (scratchpad)
