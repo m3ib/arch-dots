@@ -25,7 +25,7 @@ Singleton {
   property real volume: Pipewire.defaultAudioSink?.audio?.volume
 
   function setVolume(value) {
-    root.volume = Math.max(0, Math.min(value, 1.5))
+    root.defaulSink.audio.volume = Math.max(0, Math.min(value, 1.5))
     root.newData()
   }
 
