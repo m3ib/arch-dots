@@ -21,11 +21,14 @@ return {
       documentation = { auto_show = false },
       ghost_text = { enabled = true },
       menu = {
+        auto_show = false,
         draw = {
           columns = { { "kind_icon", "label", "label_description", gap = 2 }, { "source_name", gap = 2 } },
         },
       },
     },
+
+    signature = { enabled = true },
 
     -- Default list of enabled providers defined so that you can extend it
     -- elsewhere in your config, without redefining it, due to `opts_extend`

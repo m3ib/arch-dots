@@ -2,8 +2,9 @@
   "name": "personal-snippets",
   "contributes": {
     "snippets": [
+      { "language": "all", "path": "./all.json" },
       { "language": "qml", "path": "./qml.json" },
-      { "language": "all", "path": "./all.json" }
+      { "language": "python", "path": "./py.json" }
     ]
   }
 }
