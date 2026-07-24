@@ -11,6 +11,7 @@ Shape {
   property real radius: Config.size.rounding
   property real angle: 0
 
+  preferredRendererType: Shape.CurveRenderer
   transform: Rotation { origin.x: root.radius/2; origin.y: root.radius/2; angle: root.angle}
 
   ShapePath {

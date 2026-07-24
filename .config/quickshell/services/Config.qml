@@ -8,26 +8,35 @@ pragma Singleton
 Singleton {
   property var clr: QtObject {
     property color primary: "#6666EE";
+    property color primaryLt: "#8C8CF1";
     property color bg: "#13181E";
     property color bgLt: "#28323F";
     property color fg: "#F2F2F2";
+    property color fgDrk: "#D8D8D8";
     property color danger: "#EC6990";
   }
 
   property var fontSize: QtObject {
     // in pixels
+    property real small: 12;
     property real text: 14;
+    property real heading: 18;
     property real icon: 16;
     property real iconL: 24;
   }
 
   property var fontWeight: QtObject {
+    property real light: 500;
     property real normal: 700;
+    property real bold: 900;
   }
 
   property var size: QtObject {
-    property real bar: 32;
+    // Global
     property real rounding: 10;
+    property real borderWidth: 2;
+
+    property real bar: 32;
   }
 
   property var spacing: QtObject {
@@ -55,6 +64,7 @@ Singleton {
 
   property var duration: QtObject {
     // in milliseconds
-    property real osd: 2000
+    property real animations: 150;
+    property real osd: 2000;
   }
 }

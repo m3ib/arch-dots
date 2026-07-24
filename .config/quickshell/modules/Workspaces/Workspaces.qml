@@ -45,10 +45,6 @@ ShellRoot {
       focusable: true
       visible: ShellState.workspaces.show && (modelData.name == Hyprland.focusedMonitor.name)
 
-      function getIcon(app) {
-        return Quickshell.iconPath(app, DesktopEntries.heuristicLookup(app)?.icon)
-      }
-
       function setWorkspace(value) {
         Hyprland.dispatch(`hl.dsp.focus({ workspace = "${value}" })`)
       }
@@ -128,6 +124,8 @@ ShellRoot {
 
       // overlay
       Rectangle {
+        id: overlay
+
         anchors.fill: parent
         color: Config.clr.bg
         opacity: 0.8
@@ -231,7 +229,7 @@ ShellRoot {
                     width: parent.width/3
                     height: parent.height/3
 
-                    source: getIcon(modelData.wayland?.appId)
+                    source: Hypr.getIcon(modelData.wayland?.appId)
                   }
                 }
               }

@@ -6,7 +6,6 @@ import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
 
-import qs.components
 import qs.services
 
 ShellRoot {
@@ -14,10 +13,12 @@ ShellRoot {
     model: Quickshell.screens
 
     PanelWindow {
+      id: root
+
       property var modelData
 
       screen: modelData
-      WlrLayershell.layer: WlrLayer.Bottom
+      WlrLayershell.layer: WlrLayer.Top
 
       anchors {
         top: true

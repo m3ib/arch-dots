@@ -1,6 +1,5 @@
 // The bar's center section
 
-import Quickshell
 import QtQuick
 import QtQuick.Layouts
 

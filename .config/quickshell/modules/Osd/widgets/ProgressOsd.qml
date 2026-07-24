@@ -14,7 +14,6 @@ Item {
   property string icon: ""
 
   // animation properties
-  property real animDuration: 120
   property real startOpacity: 0.2
   property real startY: 20
 
@@ -28,10 +27,10 @@ Item {
   opacity: startOpacity
 
   Behavior on y {
-    NumberAnimation { duration: animDuration; easing.type: Easing.InOutQuad }
+    NumberAnimation { duration: Config.duration.animations; easing.type: Easing.InOutQuad }
   }
   Behavior on opacity {
-    NumberAnimation { duration: animDuration }
+    NumberAnimation { duration: Config.duration.animations }
   }
 
   function show() {
@@ -50,7 +49,7 @@ Item {
     id: hideTimer
 
     running: false
-    interval: animDuration
+    interval: Config.duration.animations
     onTriggered: {
       root.visible = false
     }

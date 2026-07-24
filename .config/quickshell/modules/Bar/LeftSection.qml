@@ -1,6 +1,5 @@
 // The bar's left section
 
-import Quickshell
 import QtQuick
 import QtQuick.Layouts
 
@@ -36,7 +35,6 @@ Item {
       Text {
         id: clock
 
-        color: Config.clr.fg
         text: Sys.fmtTime("hh:mm")
       }
     }
