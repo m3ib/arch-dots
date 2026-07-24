@@ -23,6 +23,7 @@ hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 hl.bind(mainMod .. " + SHIFT + Q", hl.dsp.window.kill())
 hl.bind(mainMod .. " + W", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
+hl.bind(mainMod .. " + comma", hl.dsp.window.pin())
 
 -- move focus
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))
@@ -42,7 +43,14 @@ hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.move({ monitor = "r" }))
 hl.bind(mainMod .. " + CTRL + K", hl.dsp.window.move({ monitor = "u" }))
 hl.bind(mainMod .. " + CTRL + J", hl.dsp.window.move({ monitor = "d" }))
 
--- compute the absolute workspace id in the current workspace group
+-- next/prev non-empty workspace
+hl.bind(mainMod .. " + N", hl.dsp.focus({ workspace = "e+1" }), { repeating = true })
+hl.bind(mainMod .. " + P", hl.dsp.focus({ workspace = "e-1" }), { repeating = true })
+-- next/prev any workspace
+hl.bind(mainMod .. " + SHIFT + N", hl.dsp.focus({ workspace = "r+1" }), { repeating = true })
+hl.bind(mainMod .. " + SHIFT + P", hl.dsp.focus({ workspace = "r-1" }), { repeating = true })
+
+-- take a workspace id local to group and compute the global id
 function get_workspace(w)
   local wsGroup = math.floor((hl.get_active_workspace().id - 1) / 10) * 10
   return wsGroup + w
@@ -103,15 +111,21 @@ hl.bind("ALT + XF86AudioLowerVolume", hl.dsp.global("brightness:decrement"), { l
 
 -- requires playerctl
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
+hl.bind("Pause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
 -- utilities
+local screenshotPath = os.getenv("HOME") .. "/pics/screenshots"
 hl.bind("Print", hl.dsp.exec_cmd("hyprshot -zm region --clipboard-only"))
+hl.bind("CTRL + Print", hl.dsp.exec_cmd("hyprshot -zm region -o " .. screenshotPath))
 hl.bind("SHIFT + Print", hl.dsp.exec_cmd("hyprshot -m window -m active --clipboard-only"))
+hl.bind("CTRL + SHIFT + Print", hl.dsp.exec_cmd("hyprshot -m window -m active -o " .. screenshotPath))
 hl.bind("ALT + Print", hl.dsp.exec_cmd("hyprshot -m output -m active --clipboard-only"))
+hl.bind("CTRL + ALT + Print", hl.dsp.exec_cmd("hyprshot -m output -m active -o " .. screenshotPath))
 hl.bind(mainMod .. " + F2", hl.dsp.exec_cmd("echo -n $(hyprpicker) | wl-copy"))
 
 -- quickshell
 hl.bind(mainMod .. " + Tab", hl.dsp.exec_cmd("qs ipc call workspaces toggle"))
+hl.bind(mainMod .. " + bracketLeft", hl.dsp.exec_cmd("qs ipc call leftBar toggle"))
