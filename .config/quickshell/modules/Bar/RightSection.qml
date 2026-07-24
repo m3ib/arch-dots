@@ -9,6 +9,10 @@ import qs.services
 import "widgets"
 
 Item {
+  id: root
+
+  property var monitor
+
   visible: row.children.length > 0 // hide if empty
 
   Corner {

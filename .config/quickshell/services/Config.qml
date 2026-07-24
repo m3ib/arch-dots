@@ -52,6 +52,9 @@ Singleton {
     property real barHPadding: 12; // horizontal padding
     property real barVPadding: 4; // vertical padding
 
+    // LeftBar module
+    property real leftBarPadding: 12
+
     // Workspaces module
     property real wsGrid: 8; // spacing between each workspace
 

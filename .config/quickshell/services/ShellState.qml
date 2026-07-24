@@ -7,6 +7,9 @@ import QtQuick
 pragma Singleton
 
 Singleton {
+  property var leftBar: QtObject {
+    property bool show: false;
+  }
   property var workspaces: QtObject {
     property bool show: false;
   }

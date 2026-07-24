@@ -6,8 +6,12 @@ import QtQuick.Layouts
 import qs.components
 import qs.services
 
-
 Item {
+  id: root
+
+  property var monitor
+  property bool leftBarOpen: (ShellState.leftBar.show && Hypr.isFocusedMonitor(monitor?.name))
+
   visible: row.children.length > 0 // hide if empty
 
   Corner {
@@ -22,7 +26,7 @@ Item {
     anchors.left: parent.left
     width: row.implicitWidth + Config.spacing.barHPadding*2
     height: parent.height
-    bottomRightRadius: Config.size.rounding
+    bottomRightRadius: root.leftBarOpen ? 0 : Config.size.rounding
     color: Config.clr.bg
 
     RowLayout {
@@ -35,7 +39,7 @@ Item {
       Text {
         id: clock
 
-        text: Sys.fmtTime("hh:mm")
+        text: Clock.fmtTime("hh:mm")
       }
     }
   }
@@ -44,5 +48,12 @@ Item {
     anchors.top: parent.top
     x: rect.width
     angle: 90
+  }
+
+  Corner {
+    anchors.bottom: parent.bottom
+    x: rect.width
+    angle: 0
+    visible: root.leftBarOpen
   }
 }

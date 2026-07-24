@@ -47,15 +47,21 @@ ShellRoot {
           spacing: Config.spacing.barSection
 
           LeftSection {
+            monitor: root.modelData
+
             Layout.fillWidth: true
             Layout.fillHeight: true
           }
 
           CenterSection {
+            monitor: root.modelData
+
             Layout.fillHeight: true
           }
 
           RightSection {
+            monitor: root.modelData
+
             Layout.fillWidth: true
             Layout.fillHeight: true
           }

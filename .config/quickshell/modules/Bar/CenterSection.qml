@@ -8,6 +8,10 @@ import qs.services
 
 
 Item {
+  id: root
+
+  property var monitor
+
   width: rect.width
   visible: row.children.length > 0 // hide if empty
 
