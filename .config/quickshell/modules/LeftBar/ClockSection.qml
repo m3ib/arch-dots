@@ -27,7 +27,7 @@ Item {
 
       Text {
         anchors.horizontalCenter: parent.horizontalCenter
-        text: Sys.fmtTime(`ddd, MMM dd'${Clock.ordinalSuffix(Number(Clock.fmtTime('dd')))}' M/yy`)
+        text: Clock.fmtTime(`ddd, MMM dd'${Clock.ordinalSuffix(Number(Clock.fmtTime('dd')))}' M/yy`)
         color: Config.clr.fgDrk
         font.weight: Config.fontWeight.light
       }
