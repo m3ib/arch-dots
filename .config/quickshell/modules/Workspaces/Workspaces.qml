@@ -148,7 +148,7 @@ ShellRoot {
             radius: Config.size.rounding
 
             Behavior on color {
-              ColorAnimation { duration: 150; easing.type: Easing.InOutQuad }
+              ColorAnimation { duration: Config.duration.animations; easing.type: Easing.InOutQuad }
             }
 
             MouseArea {

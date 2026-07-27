@@ -12,8 +12,9 @@ Singleton {
     property color bg: "#13181E";
     property color bgLt: "#28323F";
     property color fg: "#F2F2F2";
-    property color fgDrk: "#D8D8D8";
+    property color fgDrk: "#B2B2B2";
     property color danger: "#EC6990";
+    property color success: "#69EC90";
   }
 
   property var fontSize: QtObject {

@@ -30,16 +30,21 @@ Item {
     bottomLeftRadius: Config.size.rounding
     color: Config.clr.bg
 
-
-    RowLayout {
-      id: row
-
-      anchors.centerIn: parent
-      height: parent.height - Config.spacing.barVPadding*2
-      spacing: Config.spacing.barComp
-
-      // TODO: add content
+    Behavior on width {
+      NumberAnimation { duration: Config.duration.animations; easing.type: Easing.InOutQuad }
     }
+  }
+
+  RowLayout {
+    id: row
+
+    anchors.horizontalCenter: parent.horizontalCenter
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.leftMargin: Config.spacing.barHPadding
+    height: parent.height - Config.spacing.barVPadding*2
+    spacing: Config.spacing.barComp
+
+    // TODO: add content
   }
 
   Corner {

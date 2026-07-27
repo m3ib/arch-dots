@@ -6,6 +6,8 @@ import QtQuick.Layouts
 import qs.components
 import qs.services
 
+import "./widgets/"
+
 Item {
   id: root
 
@@ -29,19 +31,27 @@ Item {
     bottomRightRadius: root.leftBarOpen ? 0 : Config.size.rounding
     color: Config.clr.bg
 
-    RowLayout {
-      id: row
-
-      anchors.centerIn: parent
-      height: parent.height - Config.spacing.barVPadding*2
-      spacing: Config.spacing.barComp
-
-      Text {
-        id: clock
-
-        text: Clock.fmtTime("hh:mm")
-      }
+    Behavior on width {
+      NumberAnimation { duration: Config.duration.animations; easing.type: Easing.InOutQuad }
     }
+  }
+
+  RowLayout {
+    id: row
+
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.leftMargin: Config.spacing.barHPadding
+    height: parent.height - Config.spacing.barVPadding*2
+    spacing: Config.spacing.barComp
+
+    Text {
+      id: clock
+
+      text: Clock.fmtTime("hh:mm")
+    }
+
+    Stopwatch {}
   }
 
   Corner {

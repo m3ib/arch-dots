@@ -10,7 +10,7 @@ Item {
   implicitWidth: row.implicitWidth
   implicitHeight: row.implicitHeight
 
-  property color clr: Bat.percentage > 25 ? Config.clr.fg : Config.clr.danger
+  property color clr: Bat.charging ? Config.clr.success : (Bat.percentage > 25 ? Config.clr.fg : Config.clr.danger)
 
   function getBatIcon() {
     const icons = {
@@ -48,7 +48,6 @@ Item {
       id: icon
 
       anchors.verticalCenter: parent.verticalCenter
-
       text: getBatIcon()
       font.pixelSize: Config.fontSize.icon
       color: root.clr
@@ -57,8 +56,8 @@ Item {
     Text {
       id: txt
 
+      visible: !Bat.full
       anchors.verticalCenter: parent.verticalCenter
-
       text: Bat.percentage + "%"
       color: root.clr
     }

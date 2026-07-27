@@ -34,6 +34,7 @@ Singleton {
         root.timersModel.setProperty(i, "timeLeft", newTimeLeft)
 
         if (newTimeLeft <= 0) {
+          Quickshell.execDetached(['sh', '-c', `notify-send -a Clock ' Timer Ended' 'Your timer "${current.title}" ended.'`])
           root.timersModel.remove(i)
         }
       }
@@ -145,6 +146,10 @@ Singleton {
 
   function pauseStopwatch() {
     root.stopwatchRunning = false;
+  }
+
+  function toggleStopwatch() {
+    root.stopwatchRunning = !root.stopwatchRunning;
   }
 
   function resetStopwatch() {

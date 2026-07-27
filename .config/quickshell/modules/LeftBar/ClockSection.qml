@@ -82,13 +82,7 @@ Item {
             }
 
             Button {
-              area.onClicked: {
-                if (Clock.stopwatchRunning) {
-                  Clock.pauseStopwatch()
-                } else {
-                  Clock.startStopwatch()
-                }
-              }
+              area.onClicked: Clock.toggleStopwatch()
               icon.text: Clock.stopwatchRunning ? "" : ""
             }
           }

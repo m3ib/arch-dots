@@ -30,16 +30,29 @@ Item {
     bottomLeftRadius: Config.size.rounding
     color: Config.clr.bg
 
-    RowLayout {
-      id: row
+    Behavior on width {
+      NumberAnimation { duration: Config.duration.animations; easing.type: Easing.InOutQuad }
+    }
+  }
 
-      anchors.centerIn: parent
-      height: parent.height - Config.spacing.barVPadding*2
-      layoutDirection: Qt.RightToLeft
-      spacing: Config.spacing.barComp
+  RowLayout {
+    id: row
 
-      Battery {}
-      Network {}
+    anchors.right: parent.right
+    anchors.verticalCenter: parent.verticalCenter
+    anchors.rightMargin: Config.spacing.barHPadding
+    height: parent.height - Config.spacing.barVPadding*2
+    layoutDirection: Qt.RightToLeft
+    spacing: Config.spacing.barComp
+
+    Battery {
+      Layout.alignment: Qt.AlignBottom
+    }
+    Network {
+      Layout.alignment: Qt.AlignBottom
+    }
+    Caffeine {
+      Layout.alignment: Qt.AlignBottom
     }
   }
 
