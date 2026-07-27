@@ -6,69 +6,73 @@ import QtQuick
 pragma Singleton
 
 Singleton {
-  property var clr: QtObject {
-    property color primary: "#6666EE";
-    property color primaryLt: "#8C8CF1";
-    property color bg: "#13181E";
-    property color bgLt: "#28323F";
-    property color fg: "#F2F2F2";
-    property color fgDrk: "#B2B2B2";
-    property color danger: "#EC6990";
-    property color success: "#69EC90";
+  readonly property var clr: QtObject {
+    readonly property color primary: "#6666EE";
+    readonly property color primaryLt: "#8C8CF1";
+    readonly property color bg: "#13181E";
+    readonly property color bgLt: "#28323F";
+    readonly property color fg: "#F2F2F2";
+    readonly property color fgDrk: "#B2B2B2";
+    readonly property color danger: "#EC6990";
+    readonly property color success: "#69EC90";
   }
 
-  property var fontSize: QtObject {
+  readonly property var fontSize: QtObject {
     // in pixels
-    property real small: 12;
-    property real text: 14;
-    property real heading: 18;
-    property real icon: 16;
-    property real iconL: 24;
+    readonly property real small: 12;
+    readonly property real text: 14;
+    readonly property real heading: 18;
+    readonly property real icon: 16;
+    readonly property real iconL: 24;
   }
 
-  property var fontWeight: QtObject {
-    property real light: 500;
-    property real normal: 700;
-    property real bold: 900;
+  readonly property var fontWeight: QtObject {
+    readonly property real light: 500;
+    readonly property real normal: 700;
+    readonly property real bold: 900;
   }
 
-  property var size: QtObject {
+  readonly property var size: QtObject {
     // Global
-    property real rounding: 10;
-    property real borderWidth: 2;
+    readonly property real rounding: 10;
+    readonly property real borderWidth: 2;
 
-    property real bar: 32;
+    readonly property real bar: 32;
   }
 
-  property var spacing: QtObject {
+  readonly property var spacing: QtObject {
     // Global
-    property real icon: 4; // icon-text gap
-    property real labelHPadding: 12;
-    property real labelVPadding: 8;
+    readonly property real icon: 4; // icon-text gap
+    readonly property real labelHPadding: 12;
+    readonly property real labelVPadding: 8;
 
     // Bar module
     // hierarchy: bar>section>component
-    property real barSection: 20; // section spacing
-    property real barComp: 16; // component spacing
-    property real barHPadding: 12; // horizontal padding
-    property real barVPadding: 4; // vertical padding
+    readonly property real barSection: 20; // section spacing
+    readonly property real barComp: 16; // component spacing
+    readonly property real barHPadding: 12; // horizontal padding
+    readonly property real barVPadding: 4; // vertical padding
 
     // LeftBar module
-    property real leftBarPadding: 12
+    readonly property real leftBarPadding: 12
 
     // Workspaces module
-    property real wsGrid: 8; // spacing between each workspace
+    readonly property real wsGrid: 8; // spacing between each workspace
 
     // Osd module
-    property real osdScreenGap: 48;
-    property real osdHPadding: 16;
-    property real osdVPadding: 12;
-    property real progressOsdPadding: 4;
+    readonly property real osdScreenGap: 48;
+    readonly property real osdHPadding: 16;
+    readonly property real osdVPadding: 12;
+    readonly property real progressOsdPadding: 4;
   }
 
-  property var duration: QtObject {
+  readonly property var duration: QtObject {
     // in milliseconds
-    property real animations: 150;
-    property real osd: 2000;
+    readonly property real animations: 150;
+    readonly property real osd: 2000;
+  }
+  readonly property var path: QtObject {
+    readonly property string scripts: `${Quickshell.env("HOME")}/.config/hypr/scripts`
+    readonly property string wallpapers: `${Quickshell.env("HOME")}/.walls`
   }
 }

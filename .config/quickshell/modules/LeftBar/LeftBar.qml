@@ -66,6 +66,11 @@ ShellRoot {
             Layout.fillWidth: true
             height: 48
 
+            Rectangle {
+              anchors.fill: parent
+              color: Config.clr.bg
+            }
+
             Column {
               anchors.fill: parent
 
