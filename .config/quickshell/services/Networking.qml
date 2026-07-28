@@ -11,6 +11,6 @@ Singleton {
   property var networks: device?.networks
   property var activeNetwork: networks?.values.find((nw) => nw.connected)
 
-  property string nwName: activeNetwork?.name ?? "N/A"
+  property string nwName: activeNetwork?.name ?? ""
   property real nwSignal: (device?.type === DeviceType.Wifi) ? (activeNetwork?.signalStrength ?? 0) : 1
 }
