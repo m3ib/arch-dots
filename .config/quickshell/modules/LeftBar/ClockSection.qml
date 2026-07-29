@@ -152,6 +152,7 @@ Item {
           model: Clock.timersModel
           delegate: Rectangle {
             required property var modelData
+            property bool isTimerPositive: modelData.timeLeft >= 0
 
             width: parent.width
             height: ongoingTimerCol.height + 16*2
@@ -173,8 +174,35 @@ Item {
 
               Text {
                 Layout.alignment: Qt.AlignHCenter
-                text: Clock.fmtDuration(modelData.timeLeft)
+                text: (isTimerPositive ? "" : "-") + Clock.fmtDuration(modelData.timeLeft)
+                color: isTimerPositive ? Config.clr.fg : Config.clr.danger
                 font.pixelSize: Config.fontSize.heading
+              }
+
+              Row {
+                Layout.alignment: Qt.AlignHCenter
+                spacing: 4
+
+                Button {
+                  visible: !modelData.running
+
+                  bg: Config.clr.bg
+                  area.onClicked: Clock.resetTimer(modelData.id)
+                  icon.text: "󰑓"
+                }
+
+                Button {
+                  area.onClicked: Clock.toggleTimer(modelData.id)
+                  icon.text: modelData.running ? "" : ""
+                }
+
+                Button {
+                  visible: !modelData.running
+
+                  bg: Config.clr.bg
+                  area.onClicked: Clock.removeTimer(modelData.id)
+                  icon.text: ""
+                }
               }
             }
           }

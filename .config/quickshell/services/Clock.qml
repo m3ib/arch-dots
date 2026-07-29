@@ -3,6 +3,8 @@
 import Quickshell
 import QtQuick
 
+import qs.services
+
 pragma Singleton
 
 Singleton {
@@ -28,15 +30,16 @@ Singleton {
         root.stopwatch += timeKeeper.interval;
       }
       for (let i = 0; i < root.timersModel.count; i++) {
-        const current = root.timersModel.get(i)
-        const newTimeLeft = Math.max(0, current.timeLeft - interval)
+        const current = root.timersModel.get(i);
+        if (!current.running) continue;
+        const newTimeLeft = current.timeLeft - interval;
 
-        root.timersModel.setProperty(i, "timeLeft", newTimeLeft)
-
-        if (newTimeLeft <= 0) {
-          Quickshell.execDetached(['sh', '-c', `notify-send -a Clock ' Timer Ended' 'Your timer "${current.title}" ended.'`])
-          root.timersModel.remove(i)
+        if (newTimeLeft < 0) {
+          OsdService.showOsd(`Timer "${current.title}" ended.`);
+          ShellState.leftBar.show = true; // force-show the leftBar
         }
+
+        root.timersModel.setProperty(i, "timeLeft", newTimeLeft);
       }
     }
   }
@@ -56,10 +59,11 @@ Singleton {
    * @return {String}           Formatted duration.
    */
   function fmtDuration(duration) {
-    const hours = Math.floor(duration / 3_600_000);
-    const mins = Math.floor((duration % 3_600_000) / 60_000);
-    const secs = Math.floor((duration % 60_000) / 1000);
-    const msecs = duration % 1000;
+    const d = duration >= 0 ? duration : -duration
+    const hours = Math.floor(d / 3_600_000);
+    const mins = Math.floor((d % 3_600_000) / 60_000);
+    const secs = Math.floor((d % 60_000) / 1000);
+    const msecs = d % 1000;
 
     const hs = hours.toString().padStart(2, "0")
     const ms = mins.toString().padStart(2, "0")
@@ -131,29 +135,83 @@ Singleton {
    * @return {Number} The id of the timer.
    */
   function createTimer(timerTitle, duration) {
+    const timerId = root.timersModel.count;
     root.timersModel.append({
+      id: timerId,
       title: timerTitle || "Unnamed",
+      running: true,
       initialDuration: duration,
       timeLeft: duration
     });
 
-    return root.timersModel.count - 1;
+    return timerId;
   }
 
-  function startStopwatch() {
-    root.stopwatchRunning = true;
+  /** Set stopwatch running state.
+   * @param {Boolean} state
+   */
+  function setStopwatch(state) {
+    root.stopwatchRunning = state;
   }
 
-  function pauseStopwatch() {
-    root.stopwatchRunning = false;
-  }
-
+  /** Toggle stopwatch running state. */
   function toggleStopwatch() {
     root.stopwatchRunning = !root.stopwatchRunning;
   }
 
+  /** Reset stopwatch and pause it. */
   function resetStopwatch() {
     root.stopwatchRunning = false;
     root.stopwatch = 0;
+  }
+
+  /** Find the timer index in timersModel that has a certain id.
+   * @param {Number} id The id of the timer.
+   * @return {Number || Null} The timer's index or Null if it's not found.
+   */
+  function _getRealTimerId(id) {
+    for (let i = 0; i < root.timersModel.count; i++) {
+      const current = root.timersModel.get(i);
+
+      if (current.id !== id) continue;
+
+      return i;
+    }
+
+    return Null;
+  }
+
+  /** Set a timer's running state.
+   * @param {Number} id The id of the timer.
+   * @param {Boolean} state The state to set the timer to.
+   */
+  function setTimer(id, state) {
+    timersModel.setProperty(_getRealTimerId(id), "running", state);
+  }
+
+  /** Toggle a timer's running state.
+   * @param {Number} id The id of the timer.
+   */
+  function toggleTimer(id) {
+    const timerIdx = _getRealTimerId(id)
+    const timer = timersModel.get(timerIdx);
+    timersModel.setProperty(timerIdx, "running", !timer.running);
+  }
+
+  /** Reset a timer and pause it.
+   * @param {Number} id The id of the timer.
+   */
+  function resetTimer(id) {
+    const timerIdx = _getRealTimerId(id)
+    const timer = timersModel.get(timerIdx);
+    timersModel.setProperty(timerIdx, "running", false);
+    timersModel.setProperty(timerIdx, "timeLeft", timer.initialDuration);
+  }
+
+  /** Remove a timer.
+   * @param {Number} id The id of the timer.
+   */
+  function removeTimer(id) {
+    timersModel.remove(_getRealTimerId(id));
   }
 }
