@@ -1,3 +1,4 @@
+require("hyprland.config")
 require("hyprland.monitors")
 require("hyprland.startup")
 require("hyprland.keybinds")

@@ -1,13 +1,14 @@
 -- distribute a `wsCount` workspaces on each monitor in sequence
 -- e.g. monitor1 gets 1-100, monitor2 gets 101-200, ...
-local wsCount = 100
+local wsCount = require("hyprland.config").wsCount
+
 for w = 1, wsCount do
   for _, mon in pairs(hl.get_monitors()) do
     hl.workspace_rule({ workspace = tostring(w + (mon.id * wsCount)), monitor = mon.name })
   end
 end
 -- set the default workspace for each monitor
--- NOTE: this needs to be done manually, otherwise it fails on startup
+-- NOTE: this needs to be done manually for each monitor, otherwise it fails on startup
 hl.workspace_rule({ workspace = tostring((wsCount * 0) + 1), monitor = "eDP-1", default = true })
 hl.workspace_rule({ workspace = tostring((wsCount * 1) + 1), monitor = "HDMI-A-1", default = true })
 

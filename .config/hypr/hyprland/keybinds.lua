@@ -1,16 +1,38 @@
+local Conf = require("hyprland.config")
+
 local mainMod = "SUPER"
-
-hl.bind(
-  mainMod .. " + Super_L",
-  hl.dsp.exec_cmd('rofi -show combi -modes "combi,Emoji:$HOME/.config/hypr/scripts/emoji.sh"')
-)
-
 -- apps
 local terminal = "kitty"
 local browser = "zen-browser"
 local browserAlt = "brave"
 local files = "thunar"
 local filesAlt = "kitty ranger"
+
+-- take a workspace id local to group and compute the global id
+local function get_workspace(w)
+  local wsGroup = math.floor((hl.get_active_workspace().id - 1) / 10) * 10
+  return wsGroup + w
+end
+
+-- take a monitor id and return a workspace id equivalent to
+-- the active workspace in that monitor
+-- e.g. M1-W50 [absolute wsId: 50] -> M2-W50 [absolute wsId: 150]
+local function get_equiv_worksapce_in_mon(monId)
+  local activeWs = hl.get_active_workspace().id
+  local diff = monId - hl.get_active_monitor().id
+  return activeWs + (diff * Conf.wsCount)
+end
+
+-- get the workspace id that's away from the current by `delta` amount, while remaining in bounds
+local function get_relative_workspace(delta)
+  local activeWs = hl.get_active_workspace().id
+  return math.max(0, math.min(activeWs + delta, Conf.maxWsId))
+end
+
+hl.bind(
+  mainMod .. " + Super_L",
+  hl.dsp.exec_cmd('rofi -show combi -modes "combi,Emoji:$HOME/.config/hypr/scripts/emoji.sh"')
+)
 
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
@@ -37,24 +59,62 @@ hl.bind(mainMod .. " + SHIFT + L", hl.dsp.window.move({ direction = "right" }))
 hl.bind(mainMod .. " + SHIFT + K", hl.dsp.window.move({ direction = "up" }))
 hl.bind(mainMod .. " + SHIFT + J", hl.dsp.window.move({ direction = "down" }))
 
--- move window to monitor
+-- move window to monitor's active workspace
 hl.bind(mainMod .. " + CTRL + H", hl.dsp.window.move({ monitor = "l" }))
 hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.move({ monitor = "r" }))
-hl.bind(mainMod .. " + CTRL + K", hl.dsp.window.move({ monitor = "u" }))
-hl.bind(mainMod .. " + CTRL + J", hl.dsp.window.move({ monitor = "d" }))
+-- -- I have no vertical monitors
+-- hl.bind(mainMod .. " + CTRL + K", hl.dsp.window.move({ monitor = "u" }))
+-- hl.bind(mainMod .. " + CTRL + J", hl.dsp.window.move({ monitor = "d" }))
+
+-- move window to monitor's equivalent workspace
+hl.bind(mainMod .. " + ALT + H", function()
+  hl.dispatch(hl.dsp.window.move({ workspace = get_equiv_worksapce_in_mon(hl.get_monitor("l").id) }))
+end)
+hl.bind(mainMod .. " + ALT + L", function()
+  hl.dispatch(hl.dsp.window.move({ workspace = get_equiv_worksapce_in_mon(hl.get_monitor("r").id) }))
+end)
+-- -- I have no vertical monitors
+-- hl.bind(mainMod .. " + ALT + K", function()
+--   hl.dispatch(hl.dsp.window.move({ workspace = get_equiv_worksapce_in_mon(hl.get_monitor("u").id) }))
+-- end)
+-- hl.bind(mainMod .. " + ALT + J", function()
+--   hl.dispatch(hl.dsp.window.move({ workspace = get_equiv_worksapce_in_mon(hl.get_monitor("d").id) }))
+-- end)
 
 -- next/prev non-empty workspace
 hl.bind(mainMod .. " + N", hl.dsp.focus({ workspace = "e+1" }), { repeating = true })
 hl.bind(mainMod .. " + P", hl.dsp.focus({ workspace = "e-1" }), { repeating = true })
 -- next/prev any workspace
-hl.bind(mainMod .. " + SHIFT + N", hl.dsp.focus({ workspace = "r+1" }), { repeating = true })
-hl.bind(mainMod .. " + SHIFT + P", hl.dsp.focus({ workspace = "r-1" }), { repeating = true })
+hl.bind(mainMod .. " + SHIFT + N", function()
+  hl.dispatch(hl.dsp.focus({ workspace = get_relative_workspace(1) }), { repeating = true })
+end)
+hl.bind(mainMod .. " + SHIFT + P", function()
+  hl.dispatch(hl.dsp.focus({ workspace = get_relative_workspace(-1) }), { repeating = true })
+end)
 
--- take a workspace id local to group and compute the global id
-function get_workspace(w)
-  local wsGroup = math.floor((hl.get_active_workspace().id - 1) / 10) * 10
-  return wsGroup + w
-end
+-- move focus to next/prev workspace group
+hl.bind(mainMod .. " + Prior", function()
+  hl.dispatch(hl.dsp.focus({ workspace = get_relative_workspace(10) }))
+end)
+hl.bind(mainMod .. " + Next", function()
+  hl.dispatch(hl.dsp.focus({ workspace = get_relative_workspace(-10) }))
+end)
+
+-- move window to next/prev workspace group
+hl.bind(mainMod .. " + SHIFT + Prior", function()
+  hl.dispatch(hl.dsp.window.move({ workspace = get_relative_workspace(10) }))
+end)
+hl.bind(mainMod .. " + SHIFT + Next", function()
+  hl.dispatch(hl.dsp.window.move({ workspace = get_relative_workspace(-10) }))
+end)
+
+-- move window to next/prev workspace group (no follow)
+hl.bind(mainMod .. " + ALT + Prior", function()
+  hl.dispatch(hl.dsp.window.move({ workspace = get_relative_workspace(10), follow = false }))
+end)
+hl.bind(mainMod .. " + ALT + Next", function()
+  hl.dispatch(hl.dsp.window.move({ workspace = get_relative_workspace(-10), follow = false }))
+end)
 
 -- switch workspaces with mainMod + [0-9]
 -- move active window to a workspace with mainMod + SHIFT + [0-9]
