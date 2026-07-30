@@ -1,14 +1,10 @@
 // Handles volume
+pragma Singleton
 
 import Quickshell
 import Quickshell.Hyprland
 import Quickshell.Services.Pipewire
 import QtQuick
-
-import qs.components
-import qs.services
-
-pragma Singleton
 
 Singleton {
   id: root

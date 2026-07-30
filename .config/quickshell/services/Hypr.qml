@@ -1,10 +1,9 @@
 // Hyprland functions
+pragma Singleton
 
 import Quickshell
 import Quickshell.Hyprland
 import QtQuick
-
-pragma Singleton
 
 Singleton {
   function getIcon(app) {

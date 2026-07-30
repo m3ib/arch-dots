@@ -1,9 +1,8 @@
 // Long-term static data used by the shell
+pragma Singleton
 
 import Quickshell
 import QtQuick
-
-pragma Singleton
 
 Singleton {
   readonly property var clr: QtObject {
@@ -69,7 +68,7 @@ Singleton {
   readonly property var duration: QtObject {
     // in milliseconds
     readonly property real animations: 150;
-    readonly property real osd: 2000;
+    readonly property real osd: 3000;
   }
   readonly property var path: QtObject {
     readonly property string scripts: `${Quickshell.env("HOME")}/.config/hypr/scripts`

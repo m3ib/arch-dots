@@ -1,4 +1,5 @@
-// Handles volume
+// Handles brightness
+pragma Singleton
 
 import Quickshell
 import Quickshell.Io
@@ -7,8 +8,6 @@ import QtQuick
 
 import qs.components
 import qs.services
-
-pragma Singleton
 
 Singleton {
   id: root

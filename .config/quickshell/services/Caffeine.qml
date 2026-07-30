@@ -1,15 +1,20 @@
 // Caffeine mode
+pragma Singleton
 
 import Quickshell
 import Quickshell.Io
 import QtQuick
 
-pragma Singleton
+import qs.services
 
 Singleton {
   id: root
 
   property bool isRunning: false
+
+  onIsRunningChanged: {
+    OsdService.showOsd(`Caffeine mode ${isRunning ? 'enabled' : 'disabled'}.`)
+  }
 
   function toggle() {
     root.isRunning = !root.isRunning;

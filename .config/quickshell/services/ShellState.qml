@@ -1,10 +1,9 @@
 // Short-term state of the shell, e.g. Workspaces is open/closed, Bar is collapsed
+pragma Singleton
 
 import Quickshell
 import Quickshell.Io
 import QtQuick
-
-pragma Singleton
 
 Singleton {
   property var leftBar: QtObject {

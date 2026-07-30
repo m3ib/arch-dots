@@ -1,11 +1,10 @@
 // Time & date tools
+pragma Singleton
 
 import Quickshell
 import QtQuick
 
 import qs.services
-
-pragma Singleton
 
 Singleton {
   id: root

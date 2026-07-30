@@ -1,10 +1,11 @@
 // Network state
+pragma Singleton
 
 import Quickshell
 import Quickshell.Networking
 import QtQuick
 
-pragma Singleton
+import qs.services
 
 Singleton {
   property var device: Networking.devices.values[0]
@@ -13,4 +14,17 @@ Singleton {
 
   property string nwName: activeNetwork?.name ?? ""
   property real nwSignal: (device?.type === DeviceType.Wifi) ? (activeNetwork?.signalStrength ?? 0) : 1
+
+  Connections {
+    function onNwNameChanged() {
+      if (OsdService.initialStartup) {
+        return;
+      }
+      if (nwName) {
+        OsdService.showOsd(`Connected to ${nwName}.`)
+        return;
+      }
+      OsdService.showOsd(`Disconnected.`)
+    }
+  }
 }
