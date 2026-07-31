@@ -16,6 +16,15 @@ local function get_workspace(w)
   return wsGroup + w
 end
 
+---Compute the global id of the given group and group-local workspace id.
+---@param g integer 0-index group id in the current monitor.
+---@param w integer ID local to the workspace-group.
+---@return integer
+local function get_workspace_in_group(g, w)
+  local mon = hl.get_active_monitor().id * Conf.monWsCount
+  return (g * 10) + w + mon
+end
+
 ---Compute an equivalent workspace id to the current workspace in the given monitor.
 ---@param monId integer
 ---@return integer
@@ -25,7 +34,7 @@ local function get_equiv_worksapce_in_mon(monId)
   local mon = monId and monId or activeMon
 
   local diff = mon - activeMon
-  return activeWs + (diff * Conf.wsCount)
+  return activeWs + (diff * Conf.monWsCount)
 end
 
 ---Get a workspace id that's relative to the active one without leaving monitors bound.
@@ -107,26 +116,26 @@ end)
 -- move focus to next/prev workspace group
 hl.bind(mainMod .. " + Prior", function()
   hl.dispatch(hl.dsp.focus({ workspace = get_relative_workspace(10) }))
-end)
+end, { repeating = true })
 hl.bind(mainMod .. " + Next", function()
   hl.dispatch(hl.dsp.focus({ workspace = get_relative_workspace(-10) }))
-end)
+end, { repeating = true })
 
 -- move window to next/prev workspace group
 hl.bind(mainMod .. " + SHIFT + Prior", function()
   hl.dispatch(hl.dsp.window.move({ workspace = get_relative_workspace(10) }))
-end)
+end, { repeating = true })
 hl.bind(mainMod .. " + SHIFT + Next", function()
   hl.dispatch(hl.dsp.window.move({ workspace = get_relative_workspace(-10) }))
-end)
+end, { repeating = true })
 
 -- move window to next/prev workspace group (no follow)
 hl.bind(mainMod .. " + ALT + Prior", function()
   hl.dispatch(hl.dsp.window.move({ workspace = get_relative_workspace(10), follow = false }))
-end)
+end, { repeating = true })
 hl.bind(mainMod .. " + ALT + Next", function()
   hl.dispatch(hl.dsp.window.move({ workspace = get_relative_workspace(-10), follow = false }))
-end)
+end, { repeating = true })
 
 -- switch workspaces with mainMod + [0-9]
 -- move active window to a workspace with mainMod + SHIFT + [0-9]
@@ -136,6 +145,16 @@ for w = 1, 10 do
   hl.bind(mainMod .. " + " .. key, function()
     hl.dispatch(hl.dsp.focus({ workspace = get_workspace(w) }))
   end)
+  -- move to group
+  hl.bind(mainMod .. " + CTRL + " .. key, function()
+    local activeW = hl.get_active_workspace().id
+    hl.dispatch(hl.dsp.window.move({ workspace = get_workspace_in_group(w - 1, activeW % 10) }))
+  end)
+  hl.bind(mainMod .. " + CTRL + ALT + " .. key, function()
+    local activeW = hl.get_active_workspace().id
+    hl.dispatch(hl.dsp.window.move({ workspace = get_workspace_in_group(w - 1, activeW % 10), follow = false }))
+  end)
+  -- move to local workspace [1-10]
   hl.bind(mainMod .. " + SHIFT + " .. key, function()
     hl.dispatch(hl.dsp.window.move({ workspace = get_workspace(w) }))
   end)

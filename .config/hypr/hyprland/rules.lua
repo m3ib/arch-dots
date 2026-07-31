@@ -1,6 +1,6 @@
 -- distribute a `wsCount` workspaces on each monitor in sequence
 -- e.g. monitor1 gets 1-100, monitor2 gets 101-200, ...
-local wsCount = require("hyprland.config").wsCount
+local wsCount = require("hyprland.config").monWsCount
 
 for w = 1, wsCount do
   for _, mon in pairs(hl.get_monitors()) do

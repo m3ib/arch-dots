@@ -10,10 +10,10 @@ local function table_length(tbl)
   return count
 end
 
-local wsCount = 100
-local maxWsId = table_length(hl.get_monitors()) * wsCount
+local monWsCount = 100
+local maxWsId = table_length(hl.get_monitors()) * monWsCount
 
 return {
-  wsCount = wsCount,
+  monWsCount = monWsCount,
   maxWsId = maxWsId,
 }
