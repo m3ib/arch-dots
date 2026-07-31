@@ -18,7 +18,7 @@ Singleton {
 
   readonly property var fontFamily: QtObject {
     readonly property string text: "Noto Sans";
-    readonly property string icon: "FiraCode Nerd Font Propo";
+    readonly property string icon: "FiraCode Nerd Font";
   }
 
   readonly property var fontSize: QtObject {
@@ -40,8 +40,10 @@ Singleton {
     // Global
     readonly property real rounding: 10;
     readonly property real borderWidth: 2;
+    readonly property real button: 28;
 
     readonly property real bar: 32;
+    readonly property real notifWidth: 300;
   }
 
   readonly property var spacing: QtObject {
@@ -75,6 +77,14 @@ Singleton {
     readonly property real animations: 150;
     readonly property real osd: 3000;
   }
+
+  readonly property var pomo: QtObject {
+    readonly property int sessionsBeforeLongBreak: 4;
+    readonly property real focus: 40*60000;
+    readonly property real shortBreak: 10*60000;
+    readonly property real longBreak: 40*60000;
+  }
+
   readonly property var path: QtObject {
     readonly property string scripts: `${Quickshell.env("HOME")}/.config/hypr/scripts`
     readonly property string wallpapers: `${Quickshell.env("HOME")}/.walls`

@@ -7,23 +7,26 @@ Item {
   id: root
 
   property alias area: mouseArea
-  property alias icon: iconText
+  property alias body: iconText
 
   property color bg: Config.clr.primary
 
-  width: Math.max(icon.width, icon.height) + 4*2
-  height: width
+  width: Config.size.button
+  height: Config.size.button
 
   Rectangle {
+    id: rect
+
     anchors.fill: parent
     color: root.bg
-    radius: width
+    radius: Config.size.rounding
   }
 
   MouseArea {
     id: mouseArea
 
     anchors.fill: parent
+    cursorShape: Qt.PointingHandCursor
   }
 
   Icon {

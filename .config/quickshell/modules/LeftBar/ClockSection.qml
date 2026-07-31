@@ -27,20 +27,118 @@ Item {
 
       Text {
         anchors.horizontalCenter: parent.horizontalCenter
-        text: Clock.fmtTime(`ddd, MMM dd'${Clock.ordinalSuffix(Number(Clock.fmtTime('dd')))}' M/yy`)
+        text: Clock.fmtTime(`ddd, MMM d'${Clock.ordinalSuffix(Number(Clock.fmtTime('dd')))}' M/yy`)
         color: Config.clr.fgDrk
         font.weight: Config.fontWeight.light
       }
     }
 
     Column {
+      id: pomoSection
+
       Layout.fillWidth: true
       spacing: 12
+      visible: Clock.focusing
+
+      Rectangle {
+        width: parent.width
+        height: pomoContainer.height + 8*2
+        color: Config.clr.bgLt
+        radius: Config.size.rounding
+
+        ColumnLayout {
+          id: pomoContainer
+
+          anchors.centerIn: parent
+          width: parent.width - 8*2
+          spacing: 12
+
+          Text {
+            Layout.alignment: Qt.AlignHCenter
+            text: Clock.pomo.mode === "FOCUS" ? `${Clock.getPomoTitleCase()} (${Clock.pomoSessions})` : Clock.getPomoTitleCase()
+            color: Config.clr.primaryLt
+          }
+
+          Text {
+            Layout.alignment: Qt.AlignHCenter
+            text: Clock.fmtDuration(Clock.pomo.timeLeft)
+            font.pixelSize: Config.fontSize.heading
+          }
+
+          Text {
+            Layout.alignment: Qt.AlignHCenter
+            visible: Clock.pomo.mode === "FOCUS"
+            text: `${Clock.getPomoTitleCase(Clock.getNextPomo())} Next.`
+            color: Config.clr.fgDrk
+            font.weight: Config.fontWeight.light
+          }
+
+        }
+      }
+
+      RowLayout {
+        width: parent.width
+        spacing: 4
+
+        Button {
+          Layout.fillWidth: true
+          height: body.height + 8*2
+          area.onClicked: Clock.resetPomoTimer()
+
+          bg: Config.clr.bgLt
+          body.text: "󰦛"
+        }
+
+        Button {
+          Layout.fillWidth: true
+          height: body.height + 8*2
+          area.onClicked: Clock.togglePomoPause()
+
+          bg: Config.clr.bgLt
+          body.text: Clock.pomo.paused ? "" :  ""
+        }
+
+        Button {
+          Layout.fillWidth: true
+          height: body.height + 8*2
+          area.onClicked: Clock.nextPomoMode()
+
+          bg: Config.clr.bgLt
+          body.text: "󰒭"
+        }
+      }
+
+      Button {
+        width: parent.width
+        height: body.height + 8*2
+        area.onClicked: Clock.endFocusSession()
+
+        bg: Config.clr.bgLt
+        body.text: "End Focus"
+      }
+    }
+
+    Column {
+      Layout.fillWidth: true
+      spacing: 12
+      visible: !Clock.focusing
 
       Text {
         text: "Set up"
         color: Config.clr.primaryLt
         font.pixelSize: Config.fontSize.small
+      }
+
+      Text {
+        text: `${Clock.fmtHumanDuration(Clock.pomoTime)} Focused Today.`
+      }
+
+      Button {
+        width: parent.width
+        height: body.height + 8*2
+        area.onClicked: Clock.startFocusSession()
+
+        body.text: "Focus"
       }
 
       Rectangle {
@@ -75,15 +173,14 @@ Item {
 
             Button {
               visible: !Clock.stopwatchRunning && Clock.stopwatch !== 0
-
-              bg: Config.clr.bg
               area.onClicked: Clock.resetStopwatch()
-              icon.text: "󰑓"
+              bg: Config.clr.bg
+              body.text: "󰑓"
             }
 
             Button {
               area.onClicked: Clock.toggleStopwatch()
-              icon.text: Clock.stopwatchRunning ? "" : ""
+              body.text: Clock.stopwatchRunning ? "" : ""
             }
           }
         }
@@ -134,8 +231,8 @@ Item {
 
     ColumnLayout {
       Layout.fillWidth: true
-      Layout.fillHeight: true
       spacing: 8
+      visible: !Clock.focusing
 
       Text {
         text: "Ongoing"
@@ -188,12 +285,12 @@ Item {
 
                   bg: Config.clr.bg
                   area.onClicked: Clock.resetTimer(modelData.id)
-                  icon.text: "󰑓"
+                  body.text: "󰑓"
                 }
 
                 Button {
                   area.onClicked: Clock.toggleTimer(modelData.id)
-                  icon.text: modelData.running ? "" : ""
+                  body.text: modelData.running ? "" : ""
                 }
 
                 Button {
@@ -201,13 +298,18 @@ Item {
 
                   bg: Config.clr.bg
                   area.onClicked: Clock.removeTimer(modelData.id)
-                  icon.text: ""
+                  body.text: ""
                 }
               }
             }
           }
         }
       }
+    }
+
+    Item {
+      Layout.fillWidth: true
+      Layout.fillHeight: true
     }
   }
 }

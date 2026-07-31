@@ -101,8 +101,8 @@ Item {
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.margins: 4
-
         text: root.icon
+        large: true
       }
     }
   }
