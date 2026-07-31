@@ -1,3 +1,6 @@
+---Return the number of items in a table.
+---@param tbl table
+---@return integer
 local function table_length(tbl)
   local count = 0
   for _ in pairs(tbl) do

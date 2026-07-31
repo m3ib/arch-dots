@@ -8,22 +8,30 @@ local browserAlt = "brave"
 local files = "thunar"
 local filesAlt = "kitty ranger"
 
--- take a workspace id local to group and compute the global id
+---Compute the global id from the local workspace-group one.
+---@param w integer ID local to the workspace-group.
+---@return integer
 local function get_workspace(w)
   local wsGroup = math.floor((hl.get_active_workspace().id - 1) / 10) * 10
   return wsGroup + w
 end
 
--- take a monitor id and return a workspace id equivalent to
--- the active workspace in that monitor
--- e.g. M1-W50 [absolute wsId: 50] -> M2-W50 [absolute wsId: 150]
+---Compute an equivalent workspace id to the current workspace in the given monitor.
+---@param monId integer
+---@return integer
 local function get_equiv_worksapce_in_mon(monId)
   local activeWs = hl.get_active_workspace().id
-  local diff = monId - hl.get_active_monitor().id
+  local activeMon = hl.get_active_monitor().id
+  local mon = monId and monId or activeMon
+
+  local diff = mon - activeMon
   return activeWs + (diff * Conf.wsCount)
 end
 
--- get the workspace id that's away from the current by `delta` amount, while remaining in bounds
+---Get a workspace id that's relative to the active one without leaving monitors bound.
+---Note: "Monitors bound" means workspaces that are not owned by any monitor.
+---@param delta integer A positive or negative value.
+---@return integer
 local function get_relative_workspace(delta)
   local activeWs = hl.get_active_workspace().id
   return math.max(0, math.min(activeWs + delta, Conf.maxWsId))
@@ -68,17 +76,21 @@ hl.bind(mainMod .. " + CTRL + L", hl.dsp.window.move({ monitor = "r" }))
 
 -- move window to monitor's equivalent workspace
 hl.bind(mainMod .. " + ALT + H", function()
-  hl.dispatch(hl.dsp.window.move({ workspace = get_equiv_worksapce_in_mon(hl.get_monitor("l").id) }))
+  local mon = hl.get_monitor("l")
+  hl.dispatch(hl.dsp.window.move({ workspace = get_equiv_worksapce_in_mon(mon and mon.id or nil) }))
 end)
 hl.bind(mainMod .. " + ALT + L", function()
-  hl.dispatch(hl.dsp.window.move({ workspace = get_equiv_worksapce_in_mon(hl.get_monitor("r").id) }))
+  local mon = hl.get_monitor("r")
+  hl.dispatch(hl.dsp.window.move({ workspace = get_equiv_worksapce_in_mon(mon and mon.id or nil) }))
 end)
 -- -- I have no vertical monitors
 -- hl.bind(mainMod .. " + ALT + K", function()
---   hl.dispatch(hl.dsp.window.move({ workspace = get_equiv_worksapce_in_mon(hl.get_monitor("u").id) }))
+-- local mon = hl.get_monitor("u")
+--   hl.dispatch(hl.dsp.window.move({ workspace = get_equiv_worksapce_in_mon(mon and mon.id or nil) }))
 -- end)
 -- hl.bind(mainMod .. " + ALT + J", function()
---   hl.dispatch(hl.dsp.window.move({ workspace = get_equiv_worksapce_in_mon(hl.get_monitor("d").id) }))
+-- local mon = hl.get_monitor("d")
+--   hl.dispatch(hl.dsp.window.move({ workspace = get_equiv_worksapce_in_mon(mon and mon.id or nil) }))
 -- end)
 
 -- next/prev non-empty workspace
@@ -155,7 +167,6 @@ hl.bind("XF86AudioLowerVolume", hl.dsp.global("volume:decrement"), { locked = tr
 hl.bind(
   "XF86AudioMute",
   hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),
-  hl.dsp.global("volume:decrement"),
   { locked = true, repeating = true }
 )
 hl.bind(
