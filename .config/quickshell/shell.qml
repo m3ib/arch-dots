@@ -11,5 +11,5 @@ ShellRoot {
   LeftBar {}
   Workspaces {}
   Osd {}
-  // Notifs {}
+  Notifs {}
 }

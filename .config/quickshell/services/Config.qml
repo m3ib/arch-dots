@@ -16,6 +16,11 @@ Singleton {
     readonly property color success: "#69EC90";
   }
 
+  readonly property var fontFamily: QtObject {
+    readonly property string text: "Noto Sans";
+    readonly property string icon: "FiraCode Nerd Font Propo";
+  }
+
   readonly property var fontSize: QtObject {
     // in pixels
     readonly property real small: 12;

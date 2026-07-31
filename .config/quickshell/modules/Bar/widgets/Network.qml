@@ -37,11 +37,10 @@ Item {
 
     spacing: Config.spacing.icon
 
-    Text {
+    Icon {
       id: icon
 
       text: getWifiIcon()
-      font.pixelSize: Config.fontSize.icon
       anchors.verticalCenter: parent.verticalCenter
     }
 

@@ -26,11 +26,10 @@ Item {
     anchors.fill: parent
   }
 
-  Text {
+  Icon {
     id: iconText
 
     anchors.centerIn: parent
     text: ""
-    font.pixelSize: Config.fontSize.icon
   }
 }

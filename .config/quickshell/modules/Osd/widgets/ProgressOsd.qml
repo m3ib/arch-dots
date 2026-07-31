@@ -95,7 +95,7 @@ Item {
         color: Config.clr.danger
       }
 
-      Text {
+      Icon {
         id: icon
 
         anchors.bottom: parent.bottom
@@ -103,7 +103,6 @@ Item {
         anchors.margins: 4
 
         text: root.icon
-        font.pixelSize: Config.fontSize.iconL
       }
     }
   }

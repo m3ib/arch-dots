@@ -43,11 +43,10 @@ Item {
     anchors.centerIn: parent
     spacing: Config.spacing.icon
 
-    Text {
+    Icon {
       id: icon
 
       text: ""
-      font.pixelSize: Config.fontSize.icon
       anchors.verticalCenter: parent.verticalCenter
     }
 

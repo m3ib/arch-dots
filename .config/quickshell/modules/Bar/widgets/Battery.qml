@@ -44,12 +44,11 @@ Item {
 
     spacing: Config.spacing.icon
 
-    Text {
+    Icon {
       id: icon
 
       anchors.verticalCenter: parent.verticalCenter
       text: getBatIcon()
-      font.pixelSize: Config.fontSize.icon
       color: root.clr
     }
 

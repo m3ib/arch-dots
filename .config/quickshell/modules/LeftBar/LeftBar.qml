@@ -106,10 +106,9 @@ ShellRoot {
                       }
                     }
 
-                    Text {
+                    Icon {
                       anchors.centerIn: parent
                       text: root.sectionIcons[modelData]
-                      font.pixelSize: Config.fontSize.icon
                       color: (mouseArea.containsMouse || modelData === root.activeSection) ? Config.clr.fg : Config.clr.bgLt
                     }
                   }

@@ -14,13 +14,12 @@ Item {
     onClicked: Caffeine.toggle()
   }
 
-  Text {
+  Icon {
     id: icon
 
     anchors.centerIn: parent
     text: Caffeine.isRunning ? "󰅶" : "󰾪"
     color: Caffeine.isRunning ? Config.clr.fg : Config.clr.fgDrk
-    font.pixelSize: Config.fontSize.icon
     anchors.verticalCenter: parent.verticalCenter
 
     Behavior on color {
