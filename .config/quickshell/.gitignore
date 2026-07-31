@@ -1,2 +1,3 @@
 # used for experiments
 test*.qml
+/.qmlls.ini
