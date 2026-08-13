@@ -35,21 +35,16 @@ Item {
     anchors.fill: parent
     spacing: 16
     model: root.wallsModel
-    delegate: Item {
+    delegate: Clickable {
       required property var modelData
       property string modelPath: `${root.wallPath}/${modelData}`
 
       width: listView.width
       height: wallImg.implicitHeight
 
-      MouseArea {
-        id: mouseArea
-
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: {
-          Quickshell.execDetached(["sh", "-c", `${Config.path.scripts}/set-wall.sh ${modelPath}`])
-        }
+      area.hoverEnabled: true
+      area.onClicked: {
+        Quickshell.execDetached(["sh", "-c", `${Config.path.scripts}/set-wall.sh ${modelPath}`])
       }
 
       Image {

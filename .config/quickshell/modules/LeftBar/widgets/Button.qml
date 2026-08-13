@@ -3,10 +3,9 @@ import QtQuick
 import qs.components
 import qs.services
 
-Item {
+Clickable {
   id: root
 
-  property alias area: mouseArea
   property alias body: iconText
 
   property color bg: Config.clr.primary
@@ -20,13 +19,6 @@ Item {
     anchors.fill: parent
     color: root.bg
     radius: Config.size.rounding
-  }
-
-  MouseArea {
-    id: mouseArea
-
-    anchors.fill: parent
-    cursorShape: Qt.PointingHandCursor
   }
 
   Icon {

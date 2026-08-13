@@ -3,7 +3,7 @@ import QtQuick
 import qs.components
 import qs.services
 
-Item {
+Clickable {
   id: root
 
   implicitWidth: rect.width
@@ -25,15 +25,12 @@ Item {
     }
   }
 
-  MouseArea {
-    anchors.fill: parent
-    acceptedButtons: Qt.LeftButton | Qt.RightButton
-    onClicked: (event) => {
-      if (event.button === Qt.LeftButton) {
-        Clock.toggleStopwatch()
-      } else if (event.button === Qt.RightButton) {
-        Clock.resetStopwatch()
-      }
+  area.acceptedButtons: Qt.LeftButton | Qt.RightButton
+  area.onClicked: (event) => {
+    if (event.button === Qt.LeftButton) {
+      Clock.toggleStopwatch()
+    } else if (event.button === Qt.RightButton) {
+      Clock.resetStopwatch()
     }
   }
 

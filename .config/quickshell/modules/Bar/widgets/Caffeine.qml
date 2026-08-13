@@ -3,16 +3,13 @@ import QtQuick
 import qs.components
 import qs.services
 
-Item {
+Clickable {
   id: root
 
   implicitWidth: icon.width
   implicitHeight: icon.height
 
-  MouseArea {
-    anchors.fill: parent
-    onClicked: Caffeine.toggle()
-  }
+  area.onClicked: Caffeine.toggle()
 
   Icon {
     id: icon

@@ -108,28 +108,26 @@ ShellRoot {
 
                 Repeater {
                   model: root.sectionComponents.length
-                  delegate: Rectangle {
+                  delegate: Clickable {
                     required property var modelData
 
                     height: parent.height
                     width: 32
-                    color: "transparent"
 
-                    MouseArea {
-                      id: mouseArea
-
+                    Rectangle {
                       anchors.fill: parent
-                      cursorShape: Qt.PointingHandCursor
-                      hoverEnabled: true
-                      onClicked: {
-                        root.activeSection = modelData
-                      }
+                      color: "transparent"
+                    }
+
+                    area.hoverEnabled: true
+                    area.onClicked: {
+                      root.activeSection = modelData
                     }
 
                     Icon {
                       anchors.centerIn: parent
                       text: root.sectionIcons[modelData]
-                      color: (mouseArea.containsMouse || modelData === root.activeSection) ? Config.clr.fg : Config.clr.bgLt
+                      color: (area.containsMouse || modelData === root.activeSection) ? Config.clr.fg : Config.clr.bgLt
                     }
                   }
                 }
