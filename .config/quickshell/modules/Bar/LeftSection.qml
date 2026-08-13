@@ -52,6 +52,8 @@ Item {
     }
 
     Stopwatch {}
+
+    Focus {}
   }
 
   Corner {
