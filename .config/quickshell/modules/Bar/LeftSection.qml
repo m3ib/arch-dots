@@ -12,7 +12,7 @@ Item {
   id: root
 
   property var monitor
-  property bool leftBarOpen: (ShellState.leftBar.show && Hypr.isFocusedMonitor(monitor?.name))
+  property bool leftBarOpen: (ShellState.leftBar.isShown(monitor?.name))
 
   visible: row.children.length > 0 // hide if empty
 

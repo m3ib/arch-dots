@@ -2,7 +2,6 @@
 // This module is strongly interlocked with hyprland's workspace rules
 
 import Quickshell
-import Quickshell.Io
 import Quickshell.Wayland
 import Quickshell.Hyprland
 import QtQuick
@@ -252,11 +251,5 @@ ShellRoot {
         }
       }
     }
-  }
-
-  IpcHandler {
-    target: "workspaces"
-
-    function toggle(): void { ShellState.workspaces.show = !ShellState.workspaces.show }
   }
 }

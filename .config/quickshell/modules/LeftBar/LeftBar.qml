@@ -1,8 +1,8 @@
 // A Left bar for all kind of miscellanous tools
 
 import Quickshell
+import Quickshell.Hyprland
 import Quickshell.Wayland
-import Quickshell.Io
 import QtQuick
 import QtQuick.Layouts
 
@@ -36,7 +36,27 @@ ShellRoot {
 
       color: "transparent"
       mask: Region { item: rect }
-      visible: Hypr.isFocusedMonitor(modelData?.name) && ShellState.leftBar.show
+      visible: ShellState.leftBar.isShown(modelData?.name)
+
+      Connections {
+        target: ShellState.leftBar
+
+        function onActiveMonitorsChanged() {
+          root.visible = ShellState.leftBar.isShown(modelData?.name);
+        }
+      }
+
+      Item {
+        focus: true
+        Keys.onPressed: (event) => {
+          switch (event.key) {
+            case Qt.Key_Escape:
+              ShellState.leftBar.hide(modelData?.name);
+              event.accepted = true;
+              break;
+          }
+        }
+      }
 
       Rectangle {
         id: rect
@@ -119,11 +139,5 @@ ShellRoot {
         }
       }
     }
-  }
-
-  IpcHandler {
-    target: "leftBar"
-
-    function toggle(): void { ShellState.leftBar.show = !ShellState.leftBar.show }
   }
 }

@@ -243,7 +243,7 @@ Singleton {
    * @param {Boolean} state The state to set the timer to.
    */
   function setTimer(id, state) {
-    timersModel.setProperty(_getRealTimerId(id), "running", state);
+    root.timersModel.setProperty(_getRealTimerId(id), "running", state);
   }
 
   /** Toggle a timer's running state.
@@ -251,9 +251,9 @@ Singleton {
    */
   function toggleTimer(id) {
     const timerIdx = _getRealTimerId(id)
-    const timer = timersModel.get(timerIdx);
+    const timer = root.timersModel.get(timerIdx);
 
-    timersModel.setProperty(timerIdx, "running", !timer.running);
+    root.timersModel.setProperty(timerIdx, "running", !timer.running);
   }
 
   /** Reset a timer and pause it.
@@ -261,17 +261,17 @@ Singleton {
    */
   function resetTimer(id) {
     const timerIdx = _getRealTimerId(id)
-    const timer = timersModel.get(timerIdx);
+    const timer = root.timersModel.get(timerIdx);
 
-    timersModel.setProperty(timerIdx, "running", false);
-    timersModel.setProperty(timerIdx, "timeLeft", timer.initialDuration);
+    root.timersModel.setProperty(timerIdx, "running", false);
+    root.timersModel.setProperty(timerIdx, "timeLeft", timer.initialDuration);
   }
 
   /** Remove a timer.
    * @param {Number} id The id of the timer.
    */
   function removeTimer(id) {
-    timersModel.remove(_getRealTimerId(id));
+    root.timersModel.remove(_getRealTimerId(id));
   }
 
   /** Return the given pomo mode in a human readable title case.
@@ -300,8 +300,8 @@ Singleton {
 
   /** Update focus time stastics by the current pomo duration. */
   function trackFocusTime() {
-    if (pomo.mode !== "FOCUS") return;
-    root.pomoTime += pomo.initialDuration - pomo.timeLeft;
+    if (root.pomo.mode !== "FOCUS") return;
+    root.pomoTime += root.pomo.initialDuration - root.pomo.timeLeft;
   }
 
 
