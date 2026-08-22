@@ -10,7 +10,7 @@ Item {
   implicitWidth: row.implicitWidth
   implicitHeight: row.implicitHeight
 
-  property color clr: Bat.charging ? Config.clr.success : (Bat.percentage > 25 ? Config.clr.fg : Config.clr.danger)
+  property color clr: Bat.percentage > 25 ? Config.clr.fg : Config.clr.danger
 
   function getBatIcon() {
     const icons = {

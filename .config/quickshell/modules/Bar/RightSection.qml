@@ -46,13 +46,13 @@ Item {
     spacing: Config.spacing.barComp
 
     Battery {
-      Layout.alignment: Qt.AlignBottom
+      Layout.alignment: Qt.AlignVCenter
     }
     Network {
-      Layout.alignment: Qt.AlignBottom
+      Layout.alignment: Qt.AlignVCenter
     }
     Caffeine {
-      Layout.alignment: Qt.AlignBottom
+      Layout.alignment: Qt.AlignVCenter
     }
   }
 
