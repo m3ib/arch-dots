@@ -367,9 +367,14 @@ Singleton {
 
     if (m === "FOCUS") {
       root.pomoSessions++;
-      root.pomo.paused = true; // don't auto-start focus
+    }
+
+    // auto-start behavior
+    if (pomo.timeLeft !== 0) {
+      root.pomo.paused = false;
     } else {
-      root.pomo.paused = false; // auto-start breaks
+      // TODO: consult the user config (not yet created) instead
+      root.pomo.paused = true;
     }
 
     trackFocusTime();
