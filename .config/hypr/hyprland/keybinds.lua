@@ -199,6 +199,11 @@ hl.bind("XF86MonBrightnessDown", hl.dsp.global("brightness:decrement"), { locked
 hl.bind("ALT + XF86AudioRaiseVolume", hl.dsp.global("brightness:increment"), { locked = true, repeating = true })
 hl.bind("ALT + XF86AudioLowerVolume", hl.dsp.global("brightness:decrement"), { locked = true, repeating = true })
 
+hl.bind(mainMod .. " + CTRL + SHIFT + P", hl.dsp.exec_cmd("systemctl poweroff"), { locked = true })
+hl.bind(mainMod .. " + CTRL + SHIFT + R", hl.dsp.exec_cmd("systemctl reboot"), { locked = true })
+hl.bind(mainMod .. " + CTRL + SHIFT + S", hl.dsp.exec_cmd("systemctl suspend"), { locked = true })
+hl.bind(mainMod .. " + CTRL + SHIFT + L", hl.dsp.exec_cmd("loginctl lock-session"), { locked = true })
+
 -- requires playerctl
 hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { locked = true })
 hl.bind("Pause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
