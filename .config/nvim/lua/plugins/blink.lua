@@ -19,7 +19,7 @@ return {
     -- (Default) Only show the documentation popup when manually triggered
     completion = {
       documentation = { auto_show = false },
-      ghost_text = { enabled = true },
+      ghost_text = { enabled = true, show_without_menu = true },
       menu = {
         auto_show = false,
         draw = {

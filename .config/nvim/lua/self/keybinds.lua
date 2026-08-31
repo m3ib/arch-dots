@@ -4,7 +4,6 @@ local builtin = require("telescope.builtin")
 local conform = require("conform")
 local oil = require("oil")
 local gitsigns = require("gitsigns")
-local cord = require("cord.api.command")
 
 wk.add({
   -- Util
@@ -33,10 +32,6 @@ wk.add({
   { "<leader>fh", builtin.help_tags, desc = "Telescope Find Help" },
   { "<leader>fc", builtin.colorscheme, desc = "Telescope Find Colorscheme" },
   { "<leader>ft", ":TodoTelescope<CR>", desc = "Telescope Find Todos" },
-  -- Cord
-  { "<leader>C", group = "Cord" },
-  { "<leader>Ct", cord.toggle_presence, desc = "Cord Toggle" },
-  { "<leader>Ci", cord.toggle_idle_force, desc = "Cord Toggle Idle" },
   -- Code
   { "<leader>c", group = "Code" },
   { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Actions" },

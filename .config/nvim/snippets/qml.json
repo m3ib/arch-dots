@@ -6,7 +6,7 @@
     ]
   },
   "doc": {
-    "prefix": "doc",
+    "prefix": "dcf",
     "body": [
       "/** ${1:desc}",
       " * @param {${2:type}} ${3:name} ${4:desc}",

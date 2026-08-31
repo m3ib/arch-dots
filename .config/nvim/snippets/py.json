@@ -1,12 +1,12 @@
 {
   "docstring": {
-    "prefix": "ds",
+    "prefix": "dc",
     "body": [
       "\"\"\"$1\"\"\""
     ]
   },
   "docstring function": {
-    "prefix": "dsf",
+    "prefix": "dcf",
     "body": [
       "\"\"\"$1\n\nArgs:\n\t$2\n\nReturns:\n\t$3\n\"\"\""
     ]
