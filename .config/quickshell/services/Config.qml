@@ -70,6 +70,12 @@ Singleton {
     readonly property real osdHPadding: 16;
     readonly property real osdVPadding: 12;
     readonly property real progressOsdPadding: 4;
+
+    // Notifs module
+    property real notifScreenGap: 2;
+    property real notif: 2;
+    property real notifHPadding: 16;
+    property real notifVPadding: 12;
   }
 
   readonly property var duration: QtObject {
