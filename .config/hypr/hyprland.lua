@@ -1,11 +1,31 @@
 require("hyprland.config")
-require("hyprland.monitors")
 require("hyprland.startup")
 require("hyprland.keybinds")
 require("hyprland.looks")
 require("hyprland.input")
 require("hyprland.rules")
 require("hyprland.env")
+
+---Get all files with a `.lua` extension in a given directory.
+---@param dir string
+---@return table
+function getLuaModules(dir)
+  local i, t, pfile = 1, {}, io.popen("ls " .. dir)
+
+  for filename in pfile:lines() do
+    if string.match(filename, "%.lua$") then
+      t[i] = string.match(filename, "(.+)%.lua$")
+      i = i + 1
+    end
+  end
+
+  return t
+end
+
+local userModules = getLuaModules("~/.config/hypr/user")
+for _, mod in ipairs(userModules) do
+  require("user." .. mod)
+end
 
 hl.on("hyprland.start", function()
   hl.exec_cmd("systemctl --user start hyprland-session.target")
