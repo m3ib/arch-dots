@@ -11,22 +11,24 @@ Singleton {
     property list<string> activeMonitors: [];
 
     /** Check whether the left bar is shown on the given monitor or not.
-     * @param {String} mon The target monitor.
+     * @param {String} mon The target monitor (default: the active monitor).
      * @return {Boolean}
      */
     function isShown(mon) {
-      return leftBar.activeMonitors.includes(mon);
+      const targetMon = mon || Hyprland.focusedMonitor.name;
+      return leftBar.activeMonitors.includes(targetMon);
     }
 
     /** Show the left bar on the given monitor.
-     * @param {String} mon The target monitor.
+     * @param {String} mon The target monitor (default: the active monitor).
      */
     function show(mon) {
-      if (leftBar.isShown(mon)) return;
-      leftBar.activeMonitors = [...leftBar.activeMonitors, mon];
+      const targetMon = mon || Hyprland.focusedMonitor.name;
+      if (leftBar.isShown(targetMon)) return;
+      leftBar.activeMonitors = [...leftBar.activeMonitors, targetMon];
     }
 
-    /** Show the left bar on the all monitors. */
+    /** Show the left bar on all monitors. */
     function showAll() {
       Hyprland.monitors.values.forEach((mon) => {
         if (leftBar.isShown(mon?.name)) return;
@@ -35,19 +37,20 @@ Singleton {
     }
 
     /** Hide the left bar on the given monitor.
-     * @param {String} mon The target monitor.
+     * @param {String} mon The target monitor (default: the active monitor).
      */
     function hide(mon) {
-      leftBar.activeMonitors = leftBar.activeMonitors.filter((m) => m !== mon);
+      const targetMon = mon || Hyprland.focusedMonitor.name;
+      leftBar.activeMonitors = leftBar.activeMonitors.filter((m) => m !== targetMon);
     }
 
-    /** Hide the left bar on the all monitors. */
+    /** Hide the left bar on all monitors. */
     function hideAll() {
       leftBar.activeMonitors = [];
     }
 
     /** Toggle the left bar on the given monitor.
-     * @param {String} mon The target monitor.
+     * @param {String} mon The target monitor. (default: the active monitor)
      */
     function toggle(mon) {
       if (leftBar.isShown(mon)) {
@@ -66,7 +69,7 @@ Singleton {
   IpcHandler {
     target: "leftBar"
 
-    function toggle(): void { leftBar.toggle(Hyprland.focusedMonitor?.name) }
+    function toggle(): void { leftBar.toggle() }
     function showAll(): void { leftBar.showAll() }
     function hideAll(): void { leftBar.hideAll() }
   }

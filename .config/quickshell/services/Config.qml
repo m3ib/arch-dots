@@ -86,9 +86,9 @@ Singleton {
 
   readonly property var pomo: QtObject {
     readonly property int sessionsBeforeLongBreak: 4;
-    readonly property real focus: 40*60000;
+    readonly property real focus: 50*60000;
     readonly property real shortBreak: 10*60000;
-    readonly property real longBreak: 40*60000;
+    readonly property real longBreak: 20*60000;
   }
 
   readonly property var path: QtObject {
