@@ -2,6 +2,7 @@
 pragma Singleton
 
 import Quickshell
+import Quickshell.Io
 import QtQuick
 
 import qs.services
@@ -17,6 +18,7 @@ Singleton {
   // statistics
   property int pomoSessions: 0
   property real pomoTime: 0 // milliseconds
+  property real loggedPomoTime: 0 // milliseconds
 
   property var pomoDurations: Object.freeze({
     FOCUS: Config.pomo.focus,
@@ -51,8 +53,8 @@ Singleton {
         root.pomo.timeLeft = newPomoTime;
 
         if (newPomoTime === 0) {
-          OsdService.showOsd(`Pomodoro ${getPomoLowerCase()} ended.`)
-          nextPomoMode()
+          OsdService.showOsd(`Pomodoro ${getPomoLowerCase()} ended.`);
+          nextPomoMode();
         }
       }
 
@@ -63,12 +65,33 @@ Singleton {
 
         if (newTimeLeft < 0) {
           OsdService.showOsd(`Timer "${current.title}" ended.`);
-          ShellState.leftBar.show = true; // force-show the leftBar
+          ShellState.leftBar.show();
         }
 
         root.timersModel.setProperty(i, "timeLeft", newTimeLeft);
       }
     }
+  }
+
+  FileView {
+    id: jsonFile
+
+    path: `${Config.path.data}/focus-log.json`
+    blockLoading: true
+    onLoadFailed: (e) => {
+      if (e === FileViewError.FileNotFound) {
+        Quickshell.execDetached(["sh", "-c", `mkdir -p ${Config.path.data}; touch ${jsonFile.path}`]);
+        jsonFile.setText("{}");
+        jsonFile.reload();
+        console.log(`Created file: ${jsonFile.path}`)
+        return;
+      }
+      console.error(`FileView failed to load ${jsonFile.path}: ${e}`)
+    }
+  }
+
+  Component.onCompleted: {
+    loadFocusTime();
   }
 
   /**
@@ -298,12 +321,44 @@ Singleton {
     return mode.toLowerCase().replace("_", " ").trim();
   }
 
-  /** Update focus time stastics by the current pomo duration. */
-  function trackFocusTime() {
-    if (root.pomo.mode !== "FOCUS") return;
-    root.pomoTime += root.pomo.initialDuration - root.pomo.timeLeft;
+  /** Store focus time stastics into a file. */
+  function logFocusSession() {
+    if (root.pomo.mode === "FOCUS") {
+      root.pomoTime += root.pomo.initialDuration - root.pomo.timeLeft;
+    }
+
+    let data = JSON.parse(jsonFile.text());
+    data[new Date().toUTCString()] = Math.max(0, root.pomoTime - root.loggedPomoTime);
+    jsonFile.setText(JSON.stringify(data));
+    root.loggedPomoTime = root.pomoTime;
   }
 
+  /** Calculate time focused between datetimes `from` and `to`
+   * @param {Date} from Will only calculate sessions *after* this date.
+   * @param {Date} to Will only calculate sessions *before* this date.
+   * @return {Number} Focused time in milliseconds.
+   */
+  function calcFocusTime(from, to) {
+    const data = JSON.parse(jsonFile.text());
+
+    let output = 0;
+
+    Object.keys(data).forEach((s) => {
+      const d = new Date(s);
+      if (d < from || d > to) return;
+      output += data[s];
+    })
+
+    return output;
+  }
+
+  function loadFocusTime() {
+    let startOfToday = new Date(); startOfToday.setUTCHours(0, 0, 0, 0);
+    let endOfToday = new Date(startOfToday); endOfToday.setUTCHours(23, 59, 59, 999);
+
+    root.pomoTime = calcFocusTime(startOfToday, endOfToday);
+    root.loggedPomoTime = root.pomoTime;
+  }
 
   /** Start a new focus session. */
   function startFocusSession() {
@@ -316,9 +371,9 @@ Singleton {
   /** End the current focus session. */
   function endFocusSession() {
     root.focusing = false;
-    root.pomo.paused = true
-    // partial focus session
-    if (root.pomo.mode == "FOCUS") trackFocusTime()
+    root.pomo.paused = true;
+    logFocusSession();
+    loadFocusTime();
   }
 
   /** Toggle pomodoro puase state. */
@@ -377,12 +432,13 @@ Singleton {
       root.pomo.paused = true;
     }
 
-    trackFocusTime();
+    logFocusSession();
     setPomoMode(m);
   }
 
   /** Reset the pomodoro timer to the initial value. */
   function resetPomoTimer() {
+    root.pomo.paused = true;
     root.pomo.timeLeft = root.pomo.initialDuration;
   }
 
