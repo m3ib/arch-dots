@@ -18,7 +18,7 @@ ShellRoot {
       property var modelData
 
       screen: modelData
-      WlrLayershell.layer: WlrLayer.Top
+      WlrLayershell.layer: WlrLayer.Overlay
 
       anchors {
         top: true

@@ -12,8 +12,32 @@ Item {
 
   property var monitor
 
+  property bool shouldShow: !Hypr.isFullscreenMonitor(monitor?.name) && row.children.length > 0
+
   width: rect.width
-  visible: row.children.length > 0 // hide if empty
+  visible: shouldShow
+
+  Behavior on opacity {
+    NumberAnimation { duration: Config.duration.animations }
+  }
+
+  onShouldShowChanged: {
+    if (!shouldShow)
+      animTimer.running = true
+     else {
+      root.visible = true
+    }
+    root.opacity = shouldShow ? 1 : 0
+  }
+
+  Timer {
+    id: animTimer
+
+    interval: Config.duration.animations
+    onTriggered: {
+      root.visible = root.shouldShow
+    }
+  }
 
   Corner {
     anchors.top: parent.top

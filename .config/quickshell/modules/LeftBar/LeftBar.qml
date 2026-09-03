@@ -1,7 +1,6 @@
 // A Left bar for all kind of miscellanous tools
 
 import Quickshell
-import Quickshell.Hyprland
 import Quickshell.Wayland
 import QtQuick
 import QtQuick.Layouts
@@ -23,7 +22,7 @@ ShellRoot {
       property real activeSection: 0
 
       screen: modelData
-      WlrLayershell.layer: WlrLayer.Top
+      WlrLayershell.layer: WlrLayer.Overlay
       focusable: true
 
       anchors {
