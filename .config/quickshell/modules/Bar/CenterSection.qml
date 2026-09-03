@@ -1,5 +1,6 @@
 // The bar's center section
 
+import Quickshell.Hyprland
 import QtQuick
 import QtQuick.Layouts
 
@@ -14,7 +15,7 @@ Item {
 
   property bool shouldShow: !Hypr.isFullscreenMonitor(monitor?.name) && row.children.length > 0
 
-  width: rect.width
+  implicitWidth: rect.width
   visible: shouldShow
 
   Behavior on opacity {
@@ -68,7 +69,9 @@ Item {
     height: parent.height - Config.spacing.barVPadding*2
     spacing: Config.spacing.barComp
 
-    // TODO: add content
+    Text {
+      text: Hyprland.activeToplevel.title
+    }
   }
 
   Corner {

@@ -32,7 +32,6 @@ ShellRoot {
       mask: Region { item: rect }
       exclusiveZone: Config.size.bar
 
-
       // responsible for the dimensions of the actual bar
       Rectangle {
         id: rect
